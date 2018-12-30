@@ -4,4 +4,4 @@
 This branch is for distributing only.
 
 ## Slow access
- Same blog also hosted on [Tencent Cloud](zhiminzhang.com) as well, which is much more accessible for China users.
+ Same blog also hosted on [Tencent Cloud](www.zhiminzhang.com) as well, which is much more accessible for China users.
