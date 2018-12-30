@@ -1,0 +1,151 @@
+<p><strong>未经允许，请勿转载。</strong></p>
+<hr>
+<p>（如果对SPA概念不清楚的同学可以先自行了解相关概念）</p>
+<p>平时喜欢做点小页面来玩玩，并且一直采用单页面应用（Single Page Application）的方式来进行开发。这种开发方式是在之前一年做的一个创业项目的经验和思考，一直想写篇博客来总结一下。</p>
+<p>个人认为单页面应用的优势相当明显：</p>
+<ol>
+<li>前后端职责分离，架构清晰：前端进行交互逻辑，后端负责数据处理。</li>
+<li>前后端单独开发、单独测试。</li>
+<li>良好的交互体验，前端进行的是局部渲染。避免了不必要的跳转和重复渲染。</li>
+</ol>
+<p>当然，SPA也有它自身的缺点，例如不利于搜索引擎优化等等，这些问题也有其相应的解决方案。</p>
+<p>下面要介绍的这种方式可以说是一种模式或者工作流，和前端使用什么框架无关，也和后端使用什么语言、数据库无关。不能说是The Best Practice，我相信经过更多人的讨论和思考会有A Better Practice。:)</p>
+<h2>概览</h2>
+<p>下图展示了这种模式的整个前后端及各自的主要组成：</p>
+<p><a target="_blank" rel="noopener noreferrer" href="https://cloud.githubusercontent.com/assets/6436132/3597126/0371e1de-0cce-11e4-985a-32de0f717c8f.jpg"><img src="https://cloud.githubusercontent.com/assets/6436132/3597126/0371e1de-0cce-11e4-985a-32de0f717c8f.jpg" alt="overview" style="max-width:100%;"></a></p>
+<p>看起来有点复杂，接下来会仔细地对上面每一个部分进行解释。看完本文，就应该能理解上图中的各部件之间的交互流程。</p>
+<h2>前端架构</h2>
+<p>把上图的前端部分单独抽出来进行研究：</p>
+<p><a target="_blank" rel="noopener noreferrer" href="https://cloud.githubusercontent.com/assets/6436132/3597146/1cdbb8c0-0cce-11e4-84fb-af528f3e3226.jpg"><img src="https://cloud.githubusercontent.com/assets/6436132/3597146/1cdbb8c0-0cce-11e4-84fb-af528f3e3226.jpg" alt="simple-front" style="max-width:100%;"></a></p>
+<p>前端中大致分为四种类型的模块：</p>
+<ol>
+<li>components：前端UI组件</li>
+<li>services：前端数据缓存和操作层</li>
+<li>databus：封装一系列Ajax操作，和后端进行数据交互的部件</li>
+<li>common/utils：以上组件的共用部件，可复用的函数、数据等</li>
+</ol>
+<h3>components</h3>
+<p>component指的是页面上的<strong>一个可复用UI交互单元</strong>，例如一个博客的评论功能：</p>
+<p><a target="_blank" rel="noopener noreferrer" href="https://cloud.githubusercontent.com/assets/6436132/3597177/75747f1c-0cce-11e4-91be-1d329f4cb77a.jpg"><img src="https://cloud.githubusercontent.com/assets/6436132/3597177/75747f1c-0cce-11e4-91be-1d329f4cb77a.jpg" alt="comment" style="max-width:100%;"></a></p>
+<p>我们可以把博客评论做为一个组件，这个组件有自己的结构（html），外观（css），交互逻辑（js），所以我们可以单独做一个叫comment的component，由以下文件组成：</p>
+<ol>
+<li>comment.html</li>
+<li>comment.css</li>
+<li>comment.js</li>
+</ol>
+<p>（每个component可以想象成一个工程，甚至可以有自己的README、测试等）</p>
+<h3>components tree</h3>
+<p>一个component可以依赖另外一个component，这时候它们是父子关系；component之间也可以互相组合，它们就是兄弟关系。最后的结果就类似DOM tree，component可以组成components tree。</p>
+<p>例如，现在要给这个博客添加两个功能：</p>
+<ol>
+<li>显示评论回复。</li>
+<li>鼠标放到评论或者回复的用户头像上可以显示用户名片。</li>
+</ol>
+<p><a target="_blank" rel="noopener noreferrer" href="https://cloud.githubusercontent.com/assets/6436132/3597178/7cc6cd9c-0cce-11e4-8d7e-53f9e113d4c2.jpg"><img src="https://cloud.githubusercontent.com/assets/6436132/3597178/7cc6cd9c-0cce-11e4-8d7e-53f9e113d4c2.jpg" alt="comments-replies-poputbox" style="max-width:100%;"></a></p>
+<p>我们构建两个组件，reply和user-info-card。因为每个comment都要有自己的回复列表，所以comment组件是依赖于reply组件的，comment和reply组件是嵌套关系。</p>
+<p>而user-info-card可以出现在comment或者reply当中，并且为了以后让user-info-card复用性更强，它应该不属于任何一个组件，它和其他组件是组合关系。所以我们就得到一个简单的componenets tree：</p>
+<p><a target="_blank" rel="noopener noreferrer" href="https://cloud.githubusercontent.com/assets/6436132/3597181/8493194a-0cce-11e4-91f6-41fa361068f2.jpg"><img src="https://cloud.githubusercontent.com/assets/6436132/3597181/8493194a-0cce-11e4-91f6-41fa361068f2.jpg" alt="components-tree" style="max-width:100%;"></a></p>
+<h3>components之间的通信</h3>
+<p>怎么可以做到鼠标放到评论和回复的用户头像上显示名片呢？这其实牵涉到组件之间是如何进行通信的问题。</p>
+<p>最佳的方式就是使用事件机制，所有组件之间可以通过一个叫eventbus通用组件进行信息的交互。所以，要做到上述功能：</p>
+<ol>
+<li>user-info-card可以在eventbus监听一个<code>user-info-card:show</code>的事件。</li>
+<li>而当鼠标放到comment和reply组件的头像上的时候，组件可以使用eventbus触发<code>user-info-card:show</code>事件。</li>
+</ol>
+<p>user-info-card:</p>
+<pre><code>var eventbus = require("eventbus")
+eventbus.on("user-info-card:show", function(user) {
+    // 显示用户名片
+})
+</code></pre>
+<p>comment or reply:</p>
+<pre><code>var eventbus = require("eventbus")
+$avatar.on("mouseover", function(event) {
+    eventbus.emit("user-info-card:show", userData)
+})
+</code></pre>
+<p>components之间用事件进行通信的优势在于：</p>
+<ol>
+<li>组件之间没有强的依赖，组件之间被解耦。</li>
+<li>组件之间可以单独开发、单独测试。数据和事件都可以简单的进行伪造进行测试（mocking）。</li>
+</ol>
+<p>总结：component之间有嵌套和组合的关系，构成components tree；component之间通过事件进行信息、数据的交换。</p>
+<h3>services</h3>
+<p>component的渲染和显示依赖于数据（model）。例如上面的评论，就会有一个评论列表的model。</p>
+<pre><code>comments: [
+    {user:.., content:.., createTime: ..}, 
+    {user:.., content:.., createTime: ..}, 
+    {user:.., content:.., createTime: ..}
+]
+</code></pre>
+<p>每个评论的component会对应一个comment（comments数组中的对象）进行渲染，渲染完以后就会正确地显示在页面上。</p>
+<p>因为可能在其他component中也会需要用到这些数据，所以comment component不会自己直接保存这些comment model。这些model都会保存在service当中，而component会从service拿取数据。components和services之间是多对多的关系：一个component可能会从不同的services中拿取数据，而一个service可能为多个components提供数据。</p>
+<p>services除了用于缓存数据以外，还提供一系列对数据的一些操作接口。可以提供给components进行操作。这样的好处在于保持了数据的一直性，假如你使用的是MVVM框架进行component的开发，对数据的操作还可以直接对多个视图产生数据绑定，当services中的数据变化了，多个components的视图也会相应地得到更新。</p>
+<p>总结：services是对前端数据（也就是model）的缓存和操作。</p>
+<h3>databus</h3>
+<p>而services中缓存的数据是从哪里来的呢？当然也许想到的第一个方案是在services中直接发送Ajax请求去服务器中拉去数据。而这里建议不直接这样做，而是把各种和后端的API进行交互的接口封装到一个叫databus的模块当中，这里的databus相当于是“对后端数据进行原子操作的集合”。</p>
+<p>如上面的comment service需要从后端进行拉取数据，它会这样做：</p>
+<pre><code>var databus = require("databus")
+var comments = null
+databus.getAllComments(function(cmts) { // 调用databus方法进行数据拉取
+    comments = cmts
+})
+</code></pre>
+<p>而databus中则封装了一层Ajax：</p>
+<pre><code>databus.getAllCommetns = function(callback) {
+    utils.ajax({
+        url: "/comments",
+        method: "GET",
+        success: callback
+    })
+}
+</code></pre>
+<p>这样做是因为，不同的services之间可能会用到同样的接口对后端进行操作，把操作封装起来可以提高接口的复用性。注意，如果databus中的某些操作不涉及到servcies的数据，这操作也可以被components所调用（例如退出、登录等）。</p>
+<p>总结：databus封装了提供给services和component和后端API进行交互的接口。</p>
+<h3>common/utils</h3>
+<p>这两个模块都可以被其他组件所依赖。</p>
+<p>common，故名思议，组件之间的共用数据和一些程序参数可以缓存在这里。</p>
+<p>utils，封装了一些可复用的函数，例如ajax等。</p>
+<h3>eventbus</h3>
+<p>所有组件（特别是components之间）的通过事件机制进行数据、消息通信的接口。可以简单地使用<a href="https://github.com/asyncly/EventEmitter2">EventEmitter</a>这个库来实现。</p>
+<h2>后端架构</h2>
+<p>传统的网页页面一般都是由后端进行页面的渲染，而在我们的架构当中，<strong>后端只渲染一个页面</strong>，其后，后端只是相当于一个<strong>Web Service</strong>，前端使用Ajax调用其接口进行数据的调取和操作，使用数据进行页面的渲染。</p>
+<p>这样的好处就是，后端不仅仅能处理Web端的页面的请求，而且处理提供移动端、桌面端的请求或者作为第三方开放接口来使用。大大提高后端处理请求的灵活性。</p>
+<p>后端对比起前端的架构来说会简单很多，但是这只是其中一种模式，对于不同复杂程度的应用可能会做相应的调整。后端大概分为三层：</p>
+<p><a target="_blank" rel="noopener noreferrer" href="https://cloud.githubusercontent.com/assets/6436132/3597195/9be8b2f8-0cce-11e4-83f5-5a7baf960de5.jpg"><img src="https://cloud.githubusercontent.com/assets/6436132/3597195/9be8b2f8-0cce-11e4-83f5-5a7baf960de5.jpg" alt="server" style="max-width:100%;"></a></p>
+<ol>
+<li>CGI：设置不同的路由规则，接受前端来的请求，处理数据，返回结果。</li>
+<li>business：这一层封装了对数据库的一些操作，business可以被CGI所调用。</li>
+<li>database：数据库，进行数据的持久化。</li>
+</ol>
+<p>例如上面的comments的例子，CGI可以接收到前端发送的请求，调用business层操作数据，返回结果：</p>
+<pre><code>var commentsBusiness = require("./businesses/comments")
+app.get("/comments", function(req, res) {
+    // 此处调用comments的business数据库操作
+    commentsBusiness.getAllComments(function(comments) {
+        // 返回数据结果
+        res.json(comments)
+    })
+})
+</code></pre>
+<p>后端的API可以采用更规范的RESTful API的方式，而RESTful不在本文的讨论范围内。有兴趣的可以参考<a href="http://www.vinaysahni.com/best-practices-for-a-pragmatic-restful-api" rel="nofollow">Best Practices for Designing a Pragmatic RESTful API</a>。</p>
+<p>前后端的架构都基本清晰了，我们来看看文章开头的图：</p>
+<p><a target="_blank" rel="noopener noreferrer" href="https://cloud.githubusercontent.com/assets/6436132/3597126/0371e1de-0cce-11e4-985a-32de0f717c8f.jpg"><img src="https://cloud.githubusercontent.com/assets/6436132/3597126/0371e1de-0cce-11e4-985a-32de0f717c8f.jpg" alt="overview" style="max-width:100%;"></a></p>
+<p>看着图来，我们总结一下整个前后端的交互流程：</p>
+<ol>
+<li>前端向服务端请求第一个页面，后端渲染返回。</li>
+<li>前端加载各个component，components从services拿数据，services通过databus发送Ajax请求向后端取数据。</li>
+<li>后端的CGI接收到前端databus发送过来的请求，处理数据，调用business操作数据库，返回结果。</li>
+<li>前端接收到后端返回的结果，把数据缓存到service，component拿到数据进行前端组件的渲染、显示。</li>
+</ol>
+<h2>工作流</h2>
+<p>一个好的工作流可以让开发事半功倍。上面的这种单页面应用也有其相应的一种开发工作流，当然这种工作流也适合非单页面应用：</p>
+<ol>
+<li>进行产品功能、原型设计。</li>
+<li>后端数据库设计。</li>
+<li>根据产品确定前后端的API（or RESTful API），以文档方式纪录。</li>
+<li>前后端就可以针对API文档同时进行开发。</li>
+<li>前后端最后进行连接测试。</li>
+</ol>
+<p>前后端分离开发。建议都可以采用TDD（测试驱动开发）的方式来单独测试、单独开发（关于Web APP测试这一块可以单独进行讨论研究），提高产品的可靠性、稳定性。</p>
+<p>（完）</p>

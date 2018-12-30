@@ -1,3 +1,7 @@
-## The front-end code of the blog
+# Stories
 
-### More details will be added later.
+## gh-pages
+This branch is for distributing only.
+
+## Slow access
+ Same blog also hosted on [Tencent Cloud](zhiminzhang.com) as well, which is much more accessible for China users.
