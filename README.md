@@ -1,6 +1,11 @@
 # Stories
 欢迎Star, 欢迎PR.
 
+## Demo
+对比一下查看效果
+1. Issue: https://github.com/nzhl/books/issues 
+2. 基于Issue渲染的博客: http://blog.zhiminzhang.com
+
 ## gh-pages
 This branch is for distributing only.
 
