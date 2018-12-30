@@ -1,0 +1,73 @@
+<h3>What is Conda ?</h3>
+<blockquote>
+<p>Package, dependency and environment management for any language: Python, R, Ruby, Lua, Scala, Java, Javascript, C/ C++, FORTRAN</p>
+</blockquote>
+<p>Briefly specking, it's a combination of dependency/package management (pip) and environment management (virtualenv).<br>
+In my own point, it's simple but powerful just like python.</p>
+<h3>What is Anaconda ?</h3>
+<p>Anaconda is a tool set which contains :</p>
+<ol>
+<li>A version of python (2.x / 3.x)</li>
+<li>Conda</li>
+<li>Some commonly used package for python in data science field.</li>
+<li>Maybe there is also something else I am not sure.</li>
+</ol>
+<p><strong>So I think everyone starts to taste python should <a href="https://www.continuum.io" rel="nofollow">taste it</a> first.</strong></p>
+<h3>Install and Usage</h3>
+<p>I suppose you use <strong>Ubuntu</strong>, it's also ok if you use other Linux publications.</p>
+<h4>Install</h4>
+<p>After you install it, you got nothing special except an directory named anaconda3 in your home directory. I am not sure whether<br>
+it has already set the path for you, this command may help if it has not (change <code>.zshrc</code> into <code>.bashrc</code> if you use bash rather zsh):</p>
+<div class="highlight highlight-source-shell"><pre><span class="pl-c1">echo</span> <span class="pl-s"><span class="pl-pds">'</span>export PATH="/you-home-directory-path/anaconda3/bin:$PATH"<span class="pl-pds">'</span></span> <span class="pl-k">&gt;&gt;</span> <span class="pl-k">~</span>/.zshrc
+<span class="pl-c1">source</span> <span class="pl-k">~</span>/.zshrc</pre></div>
+<p>Then you can type <code>echo $PATH</code>, you should get something like the following :</p>
+<p>"/you-home-directory-path/anaconda3/bin:/usr/local/sbin:/usr/local/bin:..."</p>
+<p>After that, you can use <code>conda -V</code> to check you conda version and also verify you really have conda installed.</p>
+<p><strong>Since the order the path is printed is also the order the system search the command</strong>, so if you type <code>python</code> then it will use the python in the anaconda3 rather than<br>
+the python you have previous installed. So do not need to worry if you already have python installed in your system.</p>
+<h4>Usage</h4>
+<p>If you have ever used any package manager like apt-get in Ubuntu, homebrew in Mac, you will feel at home while using conda.</p>
+<ul>
+<li><code>conda create --name/-n  environment-name [dependency list]</code> : create a new develop environment.
+<ul>
+<li>once you created an environment, the data about it will stay in the ~/anaconda3/envs</li>
+<li>eg : conda create -n py3.5 requests  python=3.5</li>
+</ul>
+</li>
+<li><code>conda create --name/-n environment-name --clone source-environment-name</code> : make a copy of the source environment</li>
+<li><code>source activate environment-name</code> : change to specific environment
+<ul>
+<li>eg : source activate py3.5</li>
+</ul>
+</li>
+<li><code>source deactivate</code> : exit from that specific environment.</li>
+<li><code>conda search package-name</code> : search if specific package is available for conda to install.</li>
+<li><code>conda install/remove [--name/-n] package-name</code> : install/uninstall specific package in specific environment, or current environment if environment is not specific.
+<ul>
+<li>Environment's packages is isolated with each other.</li>
+</ul>
+</li>
+<li><code>conda remove --name/-n environment-name -all</code> : delete everything for a specific environment
+<ul>
+<li>since everything has been deleted, it just means deleted that specific environment.</li>
+</ul>
+</li>
+<li><code>conda list</code> : list all the packages you have installed</li>
+<li><code>conda info -e</code> : check all the environment you have.
+<ul>
+<li>root is the default environment which can never be deactivate, the data science package is along with it, other newly created environment<br>
+will get nothing such packages if you do not specify it explicitly.</li>
+</ul>
+</li>
+<li><code>conda update package-name</code> : update specific package
+<ul>
+<li>since conda regard everything as package, so you can in fact update conda itself using conda.</li>
+<li>eg : conda update conda</li>
+<li>eg : conda update python</li>
+<li>eg : conda updae</li>
+</ul>
+</li>
+</ul>
+<p>And you can also use pip in install packages when sometimes conda install could not manage it. The package is also isolated only inside current environment.</p>
+<h3>Uninstall</h3>
+<p>Since anaconda is nothing except the directory named anaconda3 and a line of code in the <code>.zshrc</code>. Just remove those then it's uninstalled.</p>

@@ -1,0 +1,46 @@
+<h3>Definition</h3>
+<h4>To understand what is loop invariant, we must know where we are going to use it.</h4>
+<ul>
+<li>While you are trying to prove the correctness of an algorithm, one of the most commonly used method is assertion/proof based approaches.</li>
+<li>So we construct a logical proof for any inputs and outputs (i.e build the assertion statements to describe what input and output should be).</li>
+<li>Also, if we want to prove complete correctness of an algorithm, we must also prove the termination of it.</li>
+</ul>
+<p>Here is an example of input/output assertions :</p>
+<pre><code>function sort(A)
+    //TODO
+end
+
+For the above sort algorithm, the assertions can be :
+
+input assertion / precondition : A is an array of n integers (n &gt; 0).
+
+output assertion / postcondition : /any i (1 &lt;= i &lt;= n -&gt; /exist j (1 &lt;= j &lt;= n -&gt; A0[i] == A[j]))    =&gt; no element removed
+                               and /any i (1 &lt;= i &lt;= n -&gt; /exist j (1 &lt;= j &lt;= n -&gt; A[i] == A0[j]))    =&gt; no element added
+                               and /any i (1 &lt;= i &lt;= n -&gt; /not exist j(1 &lt;= j &lt; i -&gt; A[i] &lt; A[j]))    =&gt; sorted
+
+</code></pre>
+<h4>From assertion to loop invariant</h4>
+<ol>
+<li>Following the idea above, we must prove every step of the algorithm to make sure after executing the algorithm, postcondition will hold.</li>
+<li>But usually non-loop step is kind of obvious, people always focus on the loop assertion.</li>
+<li>To put it simply, assertions about loop are called loop invariant.</li>
+</ol>
+<h3>Process</h3>
+<p>Usually we only need to show three things about loop invariant :</p>
+<ol>
+<li><strong>initialization</strong> : the invariant is true prior to the first iteration of the loop.
+<ul>
+<li>for a <code>for loop</code>, it means the position exactly after the loop variable initialization and before the loop test.</li>
+<li>for a <code>while loop</code>, it means the position before the loop test.</li>
+</ul>
+</li>
+<li><strong>maintenance</strong> : it remains true before the next iteration.
+<ul>
+<li>for a <code>for loop</code>, it means the position exactly after the loop variable update and before the loop test.</li>
+<li>for a <code>while loop</code>, it means the position exactly after current loop body and right before the next loop test.</li>
+</ul>
+</li>
+<li><strong>termination</strong> : one more thing we need to make sure is the loop do terminate, otherwise we only proved the partial correctness.</li>
+</ol>
+<h3>Some complete examples</h3>
+<p>//TODO</p>

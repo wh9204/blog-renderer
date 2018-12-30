@@ -1,0 +1,555 @@
+<div class="highlight highlight-source-haskell"><pre><span class="pl-c"><span class="pl-c">--</span>------------ Some Userful GHCi Instructions  ------------------------</span>
+
+<span class="pl-k">:</span>t<span class="pl-k">/</span><span class="pl-k">type</span> expression
+	 <span class="pl-k">=&gt;</span> find the <span class="pl-k">type</span> <span class="pl-k">of</span> the expression<span class="pl-k">.</span>
+<span class="pl-k">:</span>i<span class="pl-k">/</span>info expression
+	 <span class="pl-k">=&gt;</span> <span class="pl-ent">Usually</span> more powerful than the previous one,
+	    can <span class="pl-c1">even</span> check the priority <span class="pl-c1">or</span> associativity <span class="pl-k">of</span> operator,
+
+<span class="pl-k">:</span>module <span class="pl-k">+/-</span> module_name
+	<span class="pl-k">=&gt;</span> import<span class="pl-k">/</span>remove specific module
+
+<span class="pl-k">:</span>l<span class="pl-k">/</span>load file
+
+<span class="pl-k">:</span>r<span class="pl-k">/</span>load file
+
+<span class="pl-k">:</span>q<span class="pl-k">/</span>quit 
+
+<span class="pl-c"><span class="pl-c">--</span>------------- Some Commonly Used Type ------------------------------</span>
+
+<span class="pl-ent">Type</span> <span class="pl-ent">Starts</span> with <span class="pl-ent">Capital</span><span class="pl-k">.</span>
+
+<span class="pl-k"><span class="pl-c1">&gt;</span></span> <span class="pl-c"><span class="pl-c">--</span> data Bool = True | False</span>
+
+<span class="pl-k"><span class="pl-c1">&gt;</span></span> <span class="pl-c"><span class="pl-c">--</span> type String = [Char]</span>
+
+<span class="pl-k"><span class="pl-c1">&gt;</span></span> str_syntax1 <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">"</span>abcd<span class="pl-pds">"</span></span> <span class="pl-k">==</span> [<span class="pl-s"><span class="pl-pds">'</span>a<span class="pl-pds">'</span></span>, <span class="pl-s"><span class="pl-pds">'</span>b<span class="pl-pds">'</span></span>, <span class="pl-s"><span class="pl-pds">'</span>c<span class="pl-pds">'</span></span>, <span class="pl-s"><span class="pl-pds">'</span>d<span class="pl-pds">'</span></span>]
+<span class="pl-k"><span class="pl-c1">&gt;</span></span> str_syntax2 <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">"</span>abcd<span class="pl-pds">"</span></span> <span class="pl-k">==</span> <span class="pl-s"><span class="pl-pds">'</span>a<span class="pl-pds">'</span></span><span class="pl-k">:</span><span class="pl-s"><span class="pl-pds">'</span>b<span class="pl-pds">'</span></span><span class="pl-k">:</span><span class="pl-s"><span class="pl-pds">'</span>c<span class="pl-pds">'</span></span><span class="pl-k">:</span><span class="pl-s"><span class="pl-pds">'</span>d<span class="pl-pds">'</span></span><span class="pl-k">:</span><span class="pl-s"><span class="pl-pds">"</span><span class="pl-pds">"</span></span>
+
+
+<span class="pl-ent">Char</span> <span class="pl-k">:</span> <span class="pl-ent">Unicode</span> include <span class="pl-s"><span class="pl-pds">'</span>a<span class="pl-pds">'</span></span>, <span class="pl-s"><span class="pl-pds">'</span>b<span class="pl-pds">'</span></span><span class="pl-k">...</span>
+
+<span class="pl-ent">Int</span> <span class="pl-k">:</span> fixed<span class="pl-k">-</span>precision integer
+
+<span class="pl-ent">Integer</span> <span class="pl-k">:</span> arbitrary<span class="pl-k">-</span>precision integer
+
+<span class="pl-ent">Float</span><span class="pl-k">/</span><span class="pl-ent">Double</span> <span class="pl-k">:</span> better to use <span class="pl-ent">Double</span> for effeciency consideration
+
+
+
+<span class="pl-ent">List</span> <span class="pl-c1">and</span> tuple <span class="pl-k">:</span>
+
+<span class="pl-c1">1</span><span class="pl-k">.</span> <span class="pl-ent">List</span> is fact a collection <span class="pl-k">of</span> <span class="pl-k">**</span>same <span class="pl-k">type</span> <span class="pl-k">**</span>, <span class="pl-c1">and</span> the size is unlimited<span class="pl-k">.</span>
+<span class="pl-c1">2</span><span class="pl-k">.</span> <span class="pl-ent">The</span> <span class="pl-k">type</span> <span class="pl-k">of</span> list only depend on what it stores<span class="pl-k">.</span>
+<span class="pl-c1">3</span><span class="pl-k">.</span> <span class="pl-ent">All</span> the lists are <span class="pl-k">in</span> fact constcuted by the operator `<span class="pl-k">:</span>`,
+   `[<span class="pl-c1">1</span>,<span class="pl-c1">2</span>,<span class="pl-c1">3</span>]` are just syntax sugar <span class="pl-k">of</span> `<span class="pl-s"><span class="pl-pds">'</span>1<span class="pl-pds">'</span></span><span class="pl-k">:</span><span class="pl-s"><span class="pl-pds">'</span>2<span class="pl-pds">'</span></span><span class="pl-k">:</span><span class="pl-s"><span class="pl-pds">'</span>3<span class="pl-pds">'</span></span><span class="pl-k">:</span><span class="pl-c1">[]</span>`<span class="pl-k">.</span>
+
+<span class="pl-ent">Here</span> are some more syntax <span class="pl-k">:</span>
+
+<span class="pl-k"><span class="pl-c1">&gt;</span></span> list_syntax1 <span class="pl-k">=</span> [<span class="pl-c1">1</span>,<span class="pl-c1">2</span>,<span class="pl-c1">3</span>] 
+<span class="pl-k"><span class="pl-c1">&gt;</span></span> list_syntax2 <span class="pl-k">=</span> [<span class="pl-c1">1</span><span class="pl-k">..</span><span class="pl-c1">5</span>] <span class="pl-c"><span class="pl-c">--</span> 1,2,3,4,5</span>
+<span class="pl-k"><span class="pl-c1">&gt;</span></span> list_syntax3 <span class="pl-k">=</span> [<span class="pl-c1">1</span>, <span class="pl-c1">3</span><span class="pl-k">..</span><span class="pl-c1">7</span>] <span class="pl-c"><span class="pl-c">--</span> 1, 3, 5, 7</span>
+<span class="pl-k"><span class="pl-c1">&gt;</span></span> list_syntax4 <span class="pl-k">=</span> [<span class="pl-c1">1</span><span class="pl-k">..</span>] <span class="pl-c"><span class="pl-c">--</span> 1, 2, 3...</span>
+<span class="pl-k"><span class="pl-c1">&gt;</span></span> list_syntax5 <span class="pl-k">=</span> [<span class="pl-c1">10</span>, <span class="pl-c1">7</span><span class="pl-k">..</span><span class="pl-c1">1</span>] <span class="pl-c"><span class="pl-c">--</span> [10, 7, 4, 1]</span>
+
+<span class="pl-c1">1</span><span class="pl-k">.</span> <span class="pl-ent">Tuple</span> can store different types<span class="pl-k">.</span>
+<span class="pl-c1">2</span><span class="pl-k">.</span> <span class="pl-ent">But</span> its <span class="pl-k">type</span> depends on both the number,
+    position <span class="pl-c1">and</span> <span class="pl-k">type</span> <span class="pl-k">of</span> the elements it stores<span class="pl-k">.</span>
+
+<span class="pl-k"><span class="pl-c1">&gt;</span></span> tuple_example1 <span class="pl-k">=</span> (<span class="pl-c1">3</span>, <span class="pl-s"><span class="pl-pds">"</span>hello<span class="pl-pds">"</span></span>)  
+<span class="pl-k"><span class="pl-c1">&gt;</span></span> tuple_example2 <span class="pl-k">=</span> ([<span class="pl-c1">1</span>,<span class="pl-c1">2</span>,<span class="pl-c1">3</span>], <span class="pl-c1">2</span>, <span class="pl-s"><span class="pl-pds">'</span>a<span class="pl-pds">'</span></span>)
+
+<span class="pl-ent">List</span> comprehension
+
+<span class="pl-ent">The</span> basic syntax <span class="pl-k">:</span>
+	[the way it should generates <span class="pl-k">|</span> generator (generator<span class="pl-k">/</span><span class="pl-c1">filter</span>)<span class="pl-k">*</span>]
+
+<span class="pl-c1">1</span><span class="pl-k">.</span> generator generator element one by one<span class="pl-k">.</span>
+<span class="pl-c1">2</span><span class="pl-k">.</span> each element pass <span class="pl-c1">filter</span> from left to right <span class="pl-k">if</span> exists<span class="pl-k">.</span>
+<span class="pl-c1">3</span><span class="pl-k">.</span> once <span class="pl-c1">any</span> element failed, <span class="pl-k">then</span> just stop <span class="pl-c1">and</span> try next<span class="pl-k">.</span>
+<span class="pl-c1">4</span><span class="pl-k">.</span> <span class="pl-ent">Only</span> element which go to the end can be generated<span class="pl-k">.</span>
+
+<span class="pl-k"><span class="pl-c1">&gt;</span></span> <span class="pl-c"><span class="pl-c">--</span> [(1,2), (1,3), (2,2), (2,3), (3,2), (3,3)] no filter</span>
+<span class="pl-k"><span class="pl-c1">&gt;</span></span> list_comprehension1 <span class="pl-k">=</span> [(x, y) <span class="pl-k">|</span> x <span class="pl-k">&lt;-</span> [<span class="pl-c1">1</span><span class="pl-k">..</span><span class="pl-c1">3</span>], y <span class="pl-k">&lt;-</span> [<span class="pl-c1">2</span><span class="pl-k">..</span><span class="pl-c1">3</span>]] 
+<span class="pl-k"><span class="pl-c1">&gt;</span></span> <span class="pl-c"><span class="pl-c">--</span> [(2,2), (2,3)] the function `even` is the filter</span>
+<span class="pl-k"><span class="pl-c1">&gt;</span></span> list_comprehension2 <span class="pl-k">=</span> [(x, y) <span class="pl-k">|</span> x <span class="pl-k">&lt;-</span> [<span class="pl-c1">1</span><span class="pl-k">..</span><span class="pl-c1">3</span>], <span class="pl-c1">even</span> x, y <span class="pl-k">&lt;-</span> [<span class="pl-c1">2</span><span class="pl-k">..</span><span class="pl-c1">3</span>]] 
+
+
+<span class="pl-c"><span class="pl-c">--</span>------------------ Function ---------------------------------</span>
+
+
+<span class="pl-c1">1</span><span class="pl-k">.</span> <span class="pl-ent">Function</span> is absolutely the first<span class="pl-k">-</span>class citizen <span class="pl-k">in</span> haskell world<span class="pl-k">.</span>
+<span class="pl-c1">2</span><span class="pl-k">.</span> <span class="pl-ent">The</span> priority <span class="pl-k">of</span> functions is highter than <span class="pl-c1">all</span> the operators<span class="pl-k">.</span>
+<span class="pl-c1">3</span><span class="pl-k">.</span> <span class="pl-ent">A</span> completely definition should be `<span class="pl-k">type</span> declaration <span class="pl-k">+</span> function definition`<span class="pl-k">.</span>
+<span class="pl-c1">4</span><span class="pl-k">.</span> <span class="pl-ent">In</span> mostly <span class="pl-k">case</span> we can ignore the former since the compiler can <span class="pl-k">do</span> <span class="pl-k">type</span> inference<span class="pl-k">.</span>
+<span class="pl-c1">5</span><span class="pl-k">.</span> <span class="pl-ent">But</span> you'd better give the complete definition because <span class="pl-k">of</span> the readability<span class="pl-k">.</span>
+
+
+<span class="pl-k"><span class="pl-c1">&gt;</span></span> function_syntax1 <span class="pl-k">::</span> <span class="pl-en"><span class="pl-c1">Int</span></span> <span class="pl-k">-&gt;</span> <span class="pl-en"><span class="pl-c1">Int</span></span> <span class="pl-k">-&gt;</span> <span class="pl-en"><span class="pl-c1">Int</span></span>  
+<span class="pl-k"><span class="pl-c1">&gt;</span></span> function_syntax1 x y <span class="pl-k">=</span> x <span class="pl-k">+</span> y  
+
+<span class="pl-k"><span class="pl-c1">&gt;</span></span> <span class="pl-c"><span class="pl-c">--</span>function_syntax2 :: Int -&gt; Int -&gt; Int  </span>
+<span class="pl-k"><span class="pl-c1">&gt;</span></span> function_syntax2 x y <span class="pl-k">=</span> x <span class="pl-k">+</span> y  
+
+<span class="pl-ent">Haskell</span> has several ways to implement condition choice <span class="pl-k">:</span>
+
+<span class="pl-k"><span class="pl-c1">&gt;</span></span> <span class="pl-c"><span class="pl-c">--</span> Basically every `if condition then ... else ...`, can not omitted else.</span>
+<span class="pl-k"><span class="pl-c1">&gt;</span></span> condition_syntax1 <span class="pl-k">::</span> <span class="pl-en"><span class="pl-c1">Int</span></span> <span class="pl-k">-&gt;</span> <span class="pl-en"><span class="pl-c1">Int</span></span>
+<span class="pl-k"><span class="pl-c1">&gt;</span></span> condition_syntax1 n <span class="pl-k">=</span> <span class="pl-k">if</span> n <span class="pl-k">&gt;=</span> <span class="pl-c1">0</span> <span class="pl-k">then</span> <span class="pl-c1">1</span> <span class="pl-k">else</span> <span class="pl-k">-</span><span class="pl-c1">1</span>
+
+<span class="pl-k"><span class="pl-c1">&gt;</span></span> <span class="pl-c"><span class="pl-c">--</span> nested if </span>
+<span class="pl-k"><span class="pl-c1">&gt;</span></span> condition_syntax2 <span class="pl-k">::</span> <span class="pl-en"><span class="pl-c1">Int</span></span> <span class="pl-k">-&gt;</span> <span class="pl-en"><span class="pl-c1">Int</span></span>
+<span class="pl-k"><span class="pl-c1">&gt;</span></span> condition_syntax2 n <span class="pl-k">=</span> <span class="pl-k">if</span> n <span class="pl-k">&gt;=</span> <span class="pl-c1">0</span> 
+<span class="pl-k"><span class="pl-c1">&gt;</span></span>			<span class="pl-k">then</span> <span class="pl-k">if</span> n <span class="pl-k">&gt;</span> <span class="pl-c1">0</span> 
+<span class="pl-k"><span class="pl-c1">&gt;</span></span>			     <span class="pl-k">then</span> <span class="pl-c1">1</span>
+<span class="pl-k"><span class="pl-c1">&gt;</span></span>                            <span class="pl-k">else</span> <span class="pl-c1">0</span>
+<span class="pl-k"><span class="pl-c1">&gt;</span></span>                       <span class="pl-k">else</span> <span class="pl-k">-</span><span class="pl-c1">1</span>
+
+<span class="pl-k"><span class="pl-c1">&gt;</span></span> <span class="pl-c"><span class="pl-c">--</span> guard </span>
+<span class="pl-k"><span class="pl-c1">&gt;</span></span> condition_syntax3 <span class="pl-k">::</span> <span class="pl-en"><span class="pl-c1">Int</span></span> <span class="pl-k">-&gt;</span> <span class="pl-en"><span class="pl-c1">Int</span></span>
+<span class="pl-k"><span class="pl-c1">&gt;</span></span> condition_syntax3 n <span class="pl-k">|</span> n <span class="pl-k">&lt;</span> <span class="pl-c1">0</span>     <span class="pl-k">=</span> <span class="pl-k">-</span><span class="pl-c1">1</span>
+<span class="pl-k"><span class="pl-c1">&gt;</span></span>                     <span class="pl-k">|</span> n <span class="pl-k">==</span> <span class="pl-c1">0</span>    <span class="pl-k">=</span> <span class="pl-c1">0</span>
+<span class="pl-k"><span class="pl-c1">&gt;</span></span>		      <span class="pl-k">|</span> <span class="pl-c1">otherwise</span> <span class="pl-k">=</span> <span class="pl-c1">1</span> 
+<span class="pl-k"><span class="pl-c1">&gt;</span></span>                    <span class="pl-c"><span class="pl-c">--</span> otherwise == True</span>
+
+<span class="pl-k"><span class="pl-c1">&gt;</span></span> <span class="pl-c"><span class="pl-c">--</span> case of</span>
+<span class="pl-k"><span class="pl-c1">&gt;</span></span> condition_syntax4 <span class="pl-k">::</span> <span class="pl-en"><span class="pl-c1">Int</span></span> <span class="pl-k">-&gt;</span> <span class="pl-en"><span class="pl-c1">Int</span></span>
+<span class="pl-k"><span class="pl-c1">&gt;</span></span> condition_syntax4 n <span class="pl-k">=</span> <span class="pl-k">case</span> n <span class="pl-k">&gt;=</span> <span class="pl-c1">0</span> <span class="pl-k">of</span>
+<span class="pl-k"><span class="pl-c1">&gt;</span></span>			<span class="pl-ent"><span class="pl-c1">True</span></span>	<span class="pl-k">-&gt;</span> <span class="pl-k">case</span> n <span class="pl-k">&gt;</span> <span class="pl-c1">0</span> <span class="pl-k">of</span>
+<span class="pl-k"><span class="pl-c1">&gt;</span></span>				<span class="pl-ent"><span class="pl-c1">True</span></span>	<span class="pl-k">-&gt;</span> <span class="pl-c1">1</span>
+<span class="pl-k"><span class="pl-c1">&gt;</span></span>				<span class="pl-ent"><span class="pl-c1">False</span></span>   <span class="pl-k">-&gt;</span> <span class="pl-c1">0</span>
+<span class="pl-k"><span class="pl-c1">&gt;</span></span>                       <span class="pl-ent"><span class="pl-c1">False</span></span>	<span class="pl-k">-&gt;</span> <span class="pl-k">-</span><span class="pl-c1">1</span>
+
+pattern matching <span class="pl-k">:</span>
+	<span class="pl-c1">1</span><span class="pl-k">.</span> <span class="pl-ent">The</span> compiler try to match each pattern <span class="pl-k">in</span> <span class="pl-c1">sequence</span><span class="pl-k">.</span> 
+	<span class="pl-c1">2</span><span class="pl-k">.</span> <span class="pl-ent">If</span> success <span class="pl-k">then</span> just use this pattern, <span class="pl-c1">otherwise</span> continue match<span class="pl-k">.</span>
+	<span class="pl-c1">3</span><span class="pl-k">.</span> <span class="pl-ent">If</span> every input can be matched, <span class="pl-k">then</span> this is the complete function<span class="pl-k">.</span>
+           <span class="pl-ent">Otherwise</span> we get a partial funtion<span class="pl-k">.</span>
+	   
+<span class="pl-k"><span class="pl-c1">&gt;</span></span> <span class="pl-c"><span class="pl-c">--</span> This is the complete function, `_` can match anything.</span>
+<span class="pl-k"><span class="pl-c1">&gt;</span></span> pattern_match_syntax1 <span class="pl-k">::</span> <span class="pl-en"><span class="pl-c1">Bool</span></span> <span class="pl-k">-&gt;</span> <span class="pl-en"><span class="pl-c1">Bool</span></span> <span class="pl-k">-&gt;</span> <span class="pl-en"><span class="pl-c1">Bool</span></span>
+<span class="pl-k"><span class="pl-c1">&gt;</span></span> pattern_match_syntax1 <span class="pl-ent"><span class="pl-c1">True</span></span> <span class="pl-ent"><span class="pl-c1">True</span></span> <span class="pl-k">=</span> <span class="pl-ent"><span class="pl-c1">True</span></span> 
+<span class="pl-k"><span class="pl-c1">&gt;</span></span> pattern_match_syntax1 _ _ <span class="pl-k">=</span> <span class="pl-ent"><span class="pl-c1">False</span></span>
+
+`<span class="pl-k">let</span> expression` <span class="pl-c1">and</span> `<span class="pl-k">where</span> clause`<span class="pl-k">:</span>
+	<span class="pl-c1">1</span><span class="pl-k">.</span> <span class="pl-ent">They</span> are <span class="pl-c1">all</span> used to define local variable<span class="pl-k">/</span>function which can
+	   only be used inside the function<span class="pl-k">.</span>
+        <span class="pl-c1">2</span><span class="pl-k">.</span> <span class="pl-ent">If</span> the variables you defined <span class="pl-k">in</span> <span class="pl-k">let</span> <span class="pl-c1">and</span> <span class="pl-k">where</span> has conclict with
+           the upper range variables, <span class="pl-k">then</span> it just cover on<span class="pl-k">.</span> 
+	<span class="pl-c1">3</span><span class="pl-k">.</span> <span class="pl-ent">In</span> fact is's <span class="pl-c1">not</span> that concise to use variable here since <span class="pl-c1">all</span> <span class="pl-k">of</span>
+	   those <span class="pl-k">in</span> haskell are immutable<span class="pl-k">.</span>
+	<span class="pl-c1">4</span><span class="pl-k">.</span> <span class="pl-ent">There</span> are more informations about <span class="pl-k">let</span> <span class="pl-c1">and</span> <span class="pl-k">where</span> <span class="pl-k">in</span> be mentioned later<span class="pl-k">.</span>
+
+<span class="pl-k"><span class="pl-c1">&gt;</span></span> let_syntax1 <span class="pl-k">::</span> [<span class="pl-smi">a</span>] <span class="pl-k">-&gt;</span> <span class="pl-smi">a</span>
+<span class="pl-k"><span class="pl-c1">&gt;</span></span> let_syntax1 list <span class="pl-k">=</span> <span class="pl-k">let</span> getHead (x<span class="pl-k">:</span>xs) <span class="pl-k">=</span> x
+<span class="pl-k"><span class="pl-c1">&gt;</span></span> 	             <span class="pl-k">in</span> getHead list
+
+
+<span class="pl-k"><span class="pl-c1">&gt;</span></span> where_synatx1 <span class="pl-k">::</span> [<span class="pl-smi">a</span>] <span class="pl-k">-&gt;</span> <span class="pl-smi">a</span>
+<span class="pl-k"><span class="pl-c1">&gt;</span></span> where_synatx1 list <span class="pl-k">=</span> getHead list
+<span class="pl-k"><span class="pl-c1">&gt;</span></span>	<span class="pl-k">where</span> getHead (x<span class="pl-k">:</span>xs) <span class="pl-k">=</span> x
+
+<span class="pl-ent">Infix</span> style<span class="pl-k">:</span> functions with two parameters can be written <span class="pl-k">in</span> an infixed style<span class="pl-k">.</span>
+
+eg<span class="pl-k">:</span>
+
+<span class="pl-k"><span class="pl-c1">&gt;</span></span> infix_syntax1 <span class="pl-k">=</span> <span class="pl-c1">mod</span> <span class="pl-c1">4</span> <span class="pl-c1">2</span> <span class="pl-k">==</span> <span class="pl-c1">4</span> <span class="pl-k">`mod`</span> <span class="pl-c1">2</span>
+
+<span class="pl-ent">An</span> oprator with two parameters is <span class="pl-k">infix</span> style already, so need parentheses to
+make it used <span class="pl-k">in</span> a function sytle<span class="pl-k">.</span> 
+
+<span class="pl-k"><span class="pl-c1">&gt;</span></span> infix_syntax2 <span class="pl-k">=</span> <span class="pl-c1">4</span> <span class="pl-k">+</span> <span class="pl-c1">2</span> <span class="pl-k">==</span> <span class="pl-en">(+)</span> <span class="pl-c1">4</span> <span class="pl-c1">2</span>
+
+
+<span class="pl-ent">Curried</span> function<span class="pl-k">:</span>
+	<span class="pl-ent">You</span> will find every function <span class="pl-k">in</span> haskell are declared <span class="pl-k">in</span> the following way<span class="pl-k">:</span>
+
+		<span class="pl-en">functionName</span> <span class="pl-k">::</span> <span class="pl-smi">paramTypeName</span> <span class="pl-k">-&gt;</span> <span class="pl-smi">paramTypeName</span> <span class="pl-k">-&gt;</span> <span class="pl-smi">paramTypeName</span>
+
+	<span class="pl-ent">Every</span> function <span class="pl-k">in</span> haskell can be regarded as having only one parameter<span class="pl-k">.</span>
+
+		<span class="pl-en">(+)</span> <span class="pl-k">::</span> <span class="pl-en"><span class="pl-e">Num</span></span> <span class="pl-smi">a</span> <span class="pl-k">=&gt;</span> <span class="pl-smi">a</span> <span class="pl-k">-&gt;</span> <span class="pl-smi">a</span> <span class="pl-k">-&gt;</span> <span class="pl-smi">a</span>
+
+	<span class="pl-ent">In</span> fact are the same as <span class="pl-k">:</span>
+
+		<span class="pl-en">(+)</span> <span class="pl-k">::</span> <span class="pl-en"><span class="pl-e">Num</span></span> <span class="pl-smi">a</span> <span class="pl-k">=&gt;</span> <span class="pl-smi">a</span> <span class="pl-k">-&gt;</span> (<span class="pl-smi">a</span> <span class="pl-k">-&gt;</span> <span class="pl-smi">a</span>)
+
+	<span class="pl-ent">Which</span> means <span class="pl-en">(+)</span> is <span class="pl-k">in</span> fact a function accept an instance <span class="pl-k">of</span> <span class="pl-ent">Num</span> class <span class="pl-c1">and</span> <span class="pl-c1">return</span> another function which also aceept an instance <span class="pl-k">of</span> <span class="pl-ent">Num</span> class <span class="pl-c1">and</span> <span class="pl-c1">return</span> an instance <span class="pl-k">of</span> <span class="pl-ent">Num</span> class<span class="pl-k">.</span>
+
+	<span class="pl-ent">And</span> the first wring style is a kind <span class="pl-k">of</span> simplification<span class="pl-k">.</span> <span class="pl-ent">Then</span> we regard every function <span class="pl-k">in</span> haskell as a `accept one parameter <span class="pl-k">then</span> <span class="pl-c1">return</span>` function, which is also called curried function<span class="pl-k">.</span>
+
+<span class="pl-ent">Lambda</span> expression<span class="pl-k">:</span>
+
+<span class="pl-k"><span class="pl-c1">&gt;</span></span> lambda_syntax1 <span class="pl-k">=</span> (<span class="pl-k">\</span>n <span class="pl-k">-&gt;</span> n <span class="pl-k">+</span> <span class="pl-c1">3</span>)
+<span class="pl-k"><span class="pl-c1">&gt;</span></span> lambda_syntax2 n <span class="pl-k">=</span> n <span class="pl-k">+</span> <span class="pl-c1">3</span>
+
+<span class="pl-k"><span class="pl-c1">&gt;</span></span> lambda_syntax3 <span class="pl-k">=</span> (<span class="pl-k">\</span>m n <span class="pl-k">-&gt;</span> m <span class="pl-k">-</span> n) 
+<span class="pl-k"><span class="pl-c1">&gt;</span></span> lambda_syntax4 m n <span class="pl-k">=</span> m <span class="pl-k">-</span> n
+
+
+<span class="pl-ent">Polymorphic</span>
+(<span class="pl-ent">Ref</span> <span class="pl-k">:</span>http<span class="pl-k">://</span>stackoverflow<span class="pl-k">.</span>com<span class="pl-k">/</span>questions<span class="pl-k">/</span><span class="pl-c1">12430660</span><span class="pl-k">/</span>creating<span class="pl-k">-</span>polymorphic<span class="pl-k">-</span>functions<span class="pl-k">-</span><span class="pl-k">in</span><span class="pl-k">-</span>haskell)
+
+<span class="pl-ent">There</span> are two flavors <span class="pl-k">of</span> polymorphism <span class="pl-k">in</span> <span class="pl-ent">Haskell</span><span class="pl-k">:</span>
+
+	<span class="pl-c1">1</span><span class="pl-k">.</span> <span class="pl-ent">The</span> first is the most general <span class="pl-c"><span class="pl-c">--</span> a function is **parametrically polymorphic** if it behaves uniformly for all types, in at least one of its type parameters.</span>
+	<span class="pl-c1">2</span><span class="pl-k">.</span> <span class="pl-ent">This</span> kind <span class="pl-k">of</span> polymorphism is indicated by a lower <span class="pl-k">case</span> <span class="pl-k">type</span> variable<span class="pl-k">.</span>
+eg<span class="pl-k">:</span>
+	<span class="pl-en">length</span> <span class="pl-k">::</span> [<span class="pl-smi">a</span>] <span class="pl-k">-&gt;</span> <span class="pl-en"><span class="pl-c1">Int</span></span>
+
+	<span class="pl-c1">1</span><span class="pl-k">.</span> <span class="pl-ent">Now</span>, <span class="pl-k">if</span> you have custom behavior that you want to have for a certain set <span class="pl-k">of</span> types, <span class="pl-k">then</span> you have <span class="pl-k">**</span>bounded polymorphism<span class="pl-k">**</span> (also known as <span class="pl-s"><span class="pl-pds">"</span>ad hoc<span class="pl-pds">"</span></span>)<span class="pl-k">.</span>
+	<span class="pl-c1">2</span><span class="pl-k">.</span> <span class="pl-ent">In</span> <span class="pl-ent">Haskell</span> we use <span class="pl-k">type</span> classes for this<span class="pl-k">.</span>
+
+eg<span class="pl-k">:</span>
+	<span class="pl-en">(+)</span> <span class="pl-k">::</span> <span class="pl-en"><span class="pl-e">Num</span></span> <span class="pl-smi">a</span> <span class="pl-k">=&gt;</span> <span class="pl-smi">a</span> <span class="pl-k">-&gt;</span> (<span class="pl-smi">a</span> <span class="pl-k">-&gt;</span> <span class="pl-smi">a</span>)
+
+<span class="pl-ent">The</span> following are some <span class="pl-k">in</span><span class="pl-k">-</span>build class types<span class="pl-k">:</span>
+
+	<span class="pl-ent">Eq</span> <span class="pl-k">:</span> need to implement <span class="pl-en">(==)</span> <span class="pl-en">(/=)</span>
+
+	<span class="pl-ent">Ord</span> <span class="pl-k">:</span> need to implement <span class="pl-en">(&gt;=)</span> <span class="pl-en">(&lt;=)</span> <span class="pl-en">(&gt;)</span> <span class="pl-en">(&lt;)</span>
+				(<span class="pl-c1">min</span> <span class="pl-k">::</span> <span class="pl-smi">a</span> <span class="pl-k">-&gt;</span> <span class="pl-smi">a</span> <span class="pl-k">-&gt;</span> <span class="pl-smi">a</span>) (<span class="pl-c1">max</span> <span class="pl-k">::</span> <span class="pl-smi">a</span> <span class="pl-k">-&gt;</span> <span class="pl-smi">a</span> <span class="pl-k">-&gt;</span> <span class="pl-smi">a</span>)
+				<span class="pl-ent">And</span> must be instance <span class="pl-k">of</span> <span class="pl-ent">Eq</span> class
+
+	<span class="pl-ent">Num</span> <span class="pl-k">:</span> need to implement <span class="pl-en">(+)</span> <span class="pl-en">(-)</span> <span class="pl-en">(*)</span> (<span class="pl-c1">negate</span>) (<span class="pl-c1">abs</span>) (<span class="pl-c1">signum</span>)
+
+	<span class="pl-ent">Integral</span> <span class="pl-k">:</span> need to implement (<span class="pl-c1">div</span>) (<span class="pl-c1">mod</span>) 
+			   	     <span class="pl-ent">And</span> must be instance <span class="pl-k">of</span> <span class="pl-ent">Num</span> class
+
+	<span class="pl-ent">Fractional</span> <span class="pl-k">:</span> need to implement <span class="pl-en">(/)</span> (<span class="pl-c1">recip</span><span class="pl-k">/</span>倒数)
+
+	<span class="pl-ent">Show</span> <span class="pl-k">:</span> need to implement `<span class="pl-c1">show</span> <span class="pl-k">::</span> <span class="pl-smi">a</span> <span class="pl-k">-&gt;</span> <span class="pl-en"><span class="pl-c1">String</span></span>`
+
+	<span class="pl-ent">Read</span> <span class="pl-k">:</span> need to implement `<span class="pl-c1">read</span> <span class="pl-k">::</span> <span class="pl-en"><span class="pl-c1">String</span></span> <span class="pl-k">-&gt;</span> <span class="pl-smi">a</span>`
+
+<span class="pl-c"><span class="pl-c">--</span>------------  Class and Type  ------------------------</span>
+
+<span class="pl-ent">Define</span> your own class<span class="pl-k">:</span>
+
+<span class="pl-k"><span class="pl-c1">&gt;</span></span> class <span class="pl-ent">MyShow</span> a <span class="pl-k">where</span>
+<span class="pl-k"><span class="pl-c1">&gt;</span></span>	myShow <span class="pl-k">::</span> <span class="pl-smi">a</span> <span class="pl-k">-&gt;</span> <span class="pl-en"><span class="pl-c1">String</span></span>
+
+<span class="pl-k"><span class="pl-c1">&gt;</span></span> instance <span class="pl-ent">MyShow</span> <span class="pl-ent">Int</span> <span class="pl-k">where</span>
+<span class="pl-k"><span class="pl-c1">&gt;</span></span>	myShow i <span class="pl-k">=</span> <span class="pl-c1">show</span> i
+
+<span class="pl-ent">Type</span> <span class="pl-c1">and</span> <span class="pl-k">data</span><span class="pl-k">:</span>
+
+<span class="pl-k">`type`</span> is used for rename, it <span class="pl-k">do</span> <span class="pl-c1">not</span> define <span class="pl-c1">any</span> actual new <span class="pl-k">type</span><span class="pl-k">.</span> <span class="pl-ent">Just</span> like typedef <span class="pl-k">in</span> <span class="pl-ent">C</span><span class="pl-k">.</span> eg<span class="pl-k">:</span>
+
+<span class="pl-k"><span class="pl-c1">&gt;</span></span> <span class="pl-k">type</span> <span class="pl-ent">Coordinate</span> <span class="pl-k">=</span> (<span class="pl-ent">Int</span>, <span class="pl-ent">Int</span>)
+<span class="pl-k"><span class="pl-c1">&gt;</span></span> type_syntax <span class="pl-k">::</span> <span class="pl-en">Coordinate</span> <span class="pl-k">-&gt;</span> <span class="pl-en"><span class="pl-c1">Int</span></span> <span class="pl-c"><span class="pl-c">--</span> type_syntax :: (Int, Int) -&gt; Int</span>
+<span class="pl-k"><span class="pl-c1">&gt;</span></span> type_syntax (x, y) <span class="pl-k">=</span> x <span class="pl-k">+</span> y
+
+
+<span class="pl-k">`data`</span> is used for define an new <span class="pl-k">type</span><span class="pl-k">:</span>
+
+<span class="pl-k"><span class="pl-c1">&gt;</span></span> <span class="pl-k">data</span> <span class="pl-ent">Direction</span> <span class="pl-k">=</span> <span class="pl-ent">East</span> <span class="pl-k">|</span> <span class="pl-ent">South</span> <span class="pl-k">|</span> <span class="pl-ent">West</span> <span class="pl-k">|</span> <span class="pl-ent">North</span>
+<span class="pl-k"><span class="pl-c1">&gt;</span></span> <span class="pl-k">data</span> <span class="pl-ent">MyMaybe</span> a <span class="pl-k">=</span> <span class="pl-ent">MyNothing</span> <span class="pl-k">|</span> <span class="pl-ent">MyJust</span> a <span class="pl-k">deriving</span> <span class="pl-ent">Show</span>
+<span class="pl-k"><span class="pl-c1">&gt;</span></span> <span class="pl-c"><span class="pl-c">--</span>data Tree a = Leaf a | Node (Tree a) a (Tree a)  deriving Show</span>
+
+
+<span class="pl-k">`newtype`</span> <span class="pl-k">:</span> 
+	<span class="pl-c1">1</span><span class="pl-k">.</span> <span class="pl-ent">If</span> the <span class="pl-k">type</span> only have single constructor with single argument, <span class="pl-k">then</span> we could use <span class="pl-k">newtype</span> instead <span class="pl-k">of</span> <span class="pl-k">data</span><span class="pl-k">.</span>
+	<span class="pl-c1">2</span><span class="pl-k">.</span> <span class="pl-ent">Much</span> efficient than <span class="pl-k">data</span><span class="pl-k">.</span>
+
+<span class="pl-k"><span class="pl-c1">&gt;</span></span> <span class="pl-k">newtype</span> <span class="pl-ent">Position</span> <span class="pl-k">=</span> <span class="pl-ent">Point</span> (<span class="pl-ent">Int</span>, <span class="pl-ent">Int</span>)
+
+
+<span class="pl-ent">Define</span> your own class<span class="pl-k">:</span>
+	<span class="pl-k">class</span> <span class="pl-en"><span class="pl-e">Eq</span></span> <span class="pl-smi">a</span> <span class="pl-k">where</span> 
+		<span class="pl-en">(==)</span>, <span class="pl-en">(/=)</span> <span class="pl-k">::</span> <span class="pl-smi">a</span> <span class="pl-k">-&gt;</span> <span class="pl-smi">a</span> <span class="pl-k">-&gt;</span> <span class="pl-en"><span class="pl-c1">Bool</span></span>
+
+	<span class="pl-c"><span class="pl-c">--</span> let your data type be the instance of a class</span>
+	<span class="pl-k">instance</span> <span class="pl-en"><span class="pl-e">Eq</span></span> <span class="pl-smi">yourTypeConstructorName</span> <span class="pl-k">where</span>
+		the implementation <span class="pl-k">of</span> the requirement
+
+<span class="pl-k"><span class="pl-c1">&gt;</span></span> class <span class="pl-ent">MyEq</span> a <span class="pl-k">where</span>
+<span class="pl-k"><span class="pl-c1">&gt;</span></span> 	eq, neq <span class="pl-k">::</span> <span class="pl-smi">a</span> <span class="pl-k">-&gt;</span> <span class="pl-smi">a</span> <span class="pl-k">-&gt;</span> <span class="pl-en"><span class="pl-c1">Bool</span></span>
+<span class="pl-k"><span class="pl-c1">&gt;</span></span> 	neq x y <span class="pl-k">=</span> <span class="pl-c1">not</span> <span class="pl-k">$</span> eq x y
+
+<span class="pl-k"><span class="pl-c1">&gt;</span></span> <span class="pl-c"><span class="pl-c">--</span> you could make you data type into instances of more than one class</span>
+<span class="pl-k"><span class="pl-c1">&gt;</span></span> <span class="pl-k">data</span> <span class="pl-ent">MyBool</span> <span class="pl-k">=</span> <span class="pl-ent">MyTrue</span> <span class="pl-k">|</span> <span class="pl-ent">MyFalse</span> <span class="pl-k">deriving</span> (<span class="pl-ent">Show</span>, <span class="pl-ent">Eq</span>, <span class="pl-ent">Ord</span>) 
+<span class="pl-k"><span class="pl-c1">&gt;</span></span> instance <span class="pl-ent">MyEq</span> <span class="pl-ent">MyBool</span> <span class="pl-k">where</span>
+<span class="pl-k"><span class="pl-c1">&gt;</span></span>       <span class="pl-c"><span class="pl-c">--</span> Type declaration is illegal here, can not uncomment the following line !</span>
+<span class="pl-k"><span class="pl-c1">&gt;</span></span>	<span class="pl-c"><span class="pl-c">--</span> eq :: MyEq -&gt; MyEq -&gt; Bool </span>
+<span class="pl-k"><span class="pl-c1">&gt;</span></span>	eq <span class="pl-ent">MyTrue</span> <span class="pl-ent">MyTrue</span> <span class="pl-k">=</span> <span class="pl-ent"><span class="pl-c1">True</span></span>
+<span class="pl-k"><span class="pl-c1">&gt;</span></span>	eq <span class="pl-ent">MyFalse</span> <span class="pl-ent">MyFalse</span> <span class="pl-k">=</span> <span class="pl-ent"><span class="pl-c1">True</span></span>
+<span class="pl-k"><span class="pl-c1">&gt;</span></span>       eq _ _ <span class="pl-k">=</span> <span class="pl-ent"><span class="pl-c1">False</span></span>
+
+<span class="pl-ent">We</span> can also define a class based on a exist class<span class="pl-k">:</span>
+
+<span class="pl-k"><span class="pl-c1">&gt;</span></span> class <span class="pl-ent">MyEq</span> a <span class="pl-k">=&gt;</span> <span class="pl-ent">NewClass</span> a <span class="pl-k">where</span>
+<span class="pl-k"><span class="pl-c1">&gt;</span></span>	nothing <span class="pl-k">::</span> <span class="pl-smi">a</span> <span class="pl-k">-&gt;</span> <span class="pl-smi">a</span>
+<span class="pl-k"><span class="pl-c1">&gt;</span></span>	nothing a <span class="pl-k">=</span> a  <span class="pl-c"><span class="pl-c">--</span> you can define the default behavir</span>
+
+
+<span class="pl-c"><span class="pl-c">--</span>------------  Monad  ------------------------</span>
+
+<span class="pl-ent">Functor</span> <span class="pl-k">:</span>
+
+<span class="pl-k"><span class="pl-c1">&gt;</span></span> class <span class="pl-ent">Zunctor</span> z <span class="pl-k">where</span>
+<span class="pl-k"><span class="pl-c1">&gt;</span></span>	zmap <span class="pl-k">::</span> (<span class="pl-smi">a</span> <span class="pl-k">-&gt;</span> <span class="pl-smi">b</span>) <span class="pl-k">-&gt;</span> <span class="pl-smi">z</span> <span class="pl-smi">a</span> <span class="pl-k">-&gt;</span> <span class="pl-smi">z</span> <span class="pl-smi">b</span>
+
+<span class="pl-k"><span class="pl-c1">&gt;</span></span> instance <span class="pl-ent">Zunctor</span> <span class="pl-ent">MyMaybe</span> <span class="pl-k">where</span>
+<span class="pl-k"><span class="pl-c1">&gt;</span></span>	<span class="pl-c"><span class="pl-c">--</span> zmap :: (a -&gt; b) -&gt; MyMaybe a -&gt; MyMaybe b</span>
+<span class="pl-k"><span class="pl-c1">&gt;</span></span>	zmap f <span class="pl-ent">MyNothing</span> <span class="pl-k">=</span> <span class="pl-ent">MyNothing</span>
+<span class="pl-k"><span class="pl-c1">&gt;</span></span>	zmap f (<span class="pl-ent">MyJust</span> x) <span class="pl-k">=</span> <span class="pl-ent">MyJust</span> (f x)
+
+<span class="pl-k"><span class="pl-c1">&gt;</span></span> instance <span class="pl-ent">Zunctor</span> <span class="pl-c1">[]</span> <span class="pl-k">where</span> 
+<span class="pl-k"><span class="pl-c1">&gt;</span></span>	<span class="pl-c"><span class="pl-c">--</span> zmap :: (a -&gt; b) -&gt; [a] -&gt; [b]</span>
+<span class="pl-k"><span class="pl-c1">&gt;</span></span>	zmap <span class="pl-k">=</span> <span class="pl-c1">map</span>
+
+<span class="pl-k"><span class="pl-c1">&gt;</span></span> <span class="pl-c"><span class="pl-c">--</span> Using Zunctor we can define more general purpose function</span>
+<span class="pl-k"><span class="pl-c1">&gt;</span></span> inc <span class="pl-k">::</span> <span class="pl-en">Zunctor</span> <span class="pl-smi">z</span> <span class="pl-k">=&gt;</span> <span class="pl-smi">z</span> <span class="pl-en"><span class="pl-c1">Int</span></span> <span class="pl-k">-&gt;</span> <span class="pl-smi">z</span> <span class="pl-en"><span class="pl-c1">Int</span></span>
+<span class="pl-k"><span class="pl-c1">&gt;</span></span> inc z <span class="pl-k">=</span> zmap (<span class="pl-k">+</span><span class="pl-c1">1</span>) z
+
+
+<span class="pl-ent">Applicative</span> <span class="pl-k">:</span>
+
+<span class="pl-k"><span class="pl-c1">&gt;</span></span> <span class="pl-c"><span class="pl-c">--</span> Since Applicative should also be the instance of Functor </span>
+<span class="pl-k"><span class="pl-c1">&gt;</span></span> class <span class="pl-ent">Zunctor</span> z <span class="pl-k">=&gt;</span> <span class="pl-ent">Zpplicative</span> z <span class="pl-k">where</span>
+<span class="pl-k"><span class="pl-c1">&gt;</span></span> 	zure <span class="pl-k">::</span> <span class="pl-smi">a</span> <span class="pl-k">-&gt;</span> <span class="pl-smi">z</span> <span class="pl-smi">a</span>
+<span class="pl-k"><span class="pl-c1">&gt;</span></span>	<span class="pl-en">(&lt;#&gt;)</span>  <span class="pl-k">::</span> <span class="pl-smi">z</span> (<span class="pl-smi">a</span> <span class="pl-k">-&gt;</span> <span class="pl-smi">b</span>) <span class="pl-k">-&gt;</span> <span class="pl-smi">z</span> <span class="pl-smi">a</span> <span class="pl-k">-&gt;</span> <span class="pl-smi">z</span> <span class="pl-smi">b</span>
+
+
+<span class="pl-k"><span class="pl-c1">&gt;</span></span> instance <span class="pl-ent">Zpplicative</span> <span class="pl-ent">MyMaybe</span> <span class="pl-k">where</span> 
+<span class="pl-k"><span class="pl-c1">&gt;</span></span>	zure a <span class="pl-k">=</span> <span class="pl-ent">MyJust</span> a
+
+<span class="pl-k"><span class="pl-c1">&gt;</span></span>	<span class="pl-ent">MyNothing</span> <span class="pl-k">&lt;#&gt;</span> _ <span class="pl-k">=</span> <span class="pl-ent">MyNothing</span>
+<span class="pl-k"><span class="pl-c1">&gt;</span></span>	(<span class="pl-ent">MyJust</span> f) <span class="pl-k">&lt;#&gt;</span> zx <span class="pl-k">=</span> zmap f zx
+
+<span class="pl-ent">The</span> above definition is based on <span class="pl-ent">Zpplicative</span> is also instance <span class="pl-k">of</span> <span class="pl-ent">Zunctor</span>,
+<span class="pl-ent">The</span> definition below based on nothing<span class="pl-k">.</span> <span class="pl-ent">But</span> both works<span class="pl-k">.</span>
+	_ <span class="pl-k">&lt;#&gt;</span> <span class="pl-ent">MyNothing</span> <span class="pl-k">=</span> <span class="pl-ent">MyNothing</span>
+	<span class="pl-ent">MyNothing</span> <span class="pl-k">&lt;#&gt;</span> _ <span class="pl-k">=</span> <span class="pl-ent">MyNothing</span>
+	(<span class="pl-ent">MyJust</span> f) <span class="pl-k">&lt;#&gt;</span> (<span class="pl-ent">MyJust</span> a) <span class="pl-k">=</span> <span class="pl-ent">MyJust</span> (f a)
+
+
+<span class="pl-k"><span class="pl-c1">&gt;</span></span> instance <span class="pl-ent">Zpplicative</span> <span class="pl-c1">[]</span> <span class="pl-k">where</span>
+<span class="pl-k"><span class="pl-c1">&gt;</span></span>	zure a <span class="pl-k">=</span> [a]
+
+	
+<span class="pl-ent">TODO</span><span class="pl-k">:</span> <span class="pl-ent">Seems</span> can <span class="pl-c1">not</span> use <span class="pl-c1">fmap</span> to give definition <span class="pl-k">?</span> <span class="pl-ent">Not</span> sure<span class="pl-k">.</span>
+
+<span class="pl-k"><span class="pl-c1">&gt;</span></span>	<span class="pl-c"><span class="pl-c">--</span>(&lt;#&gt;)  :: z (a -&gt; b) -&gt; z a -&gt; z b</span>
+<span class="pl-k"><span class="pl-c1">&gt;</span></span>	fs <span class="pl-k">&lt;#&gt;</span> xs <span class="pl-k">=</span> [ f x<span class="pl-k">|</span> f <span class="pl-k">&lt;-</span> fs, x <span class="pl-k">&lt;-</span> xs]
+
+
+<span class="pl-c"><span class="pl-c">--</span> debug use</span>
+ addThree a b c <span class="pl-k">=</span> a <span class="pl-k">+</span> b <span class="pl-k">+</span> c
+
+<span class="pl-c"><span class="pl-c">--</span> some example </span>
+
+<span class="pl-k"><span class="pl-c1">&gt;</span></span> <span class="pl-k">data</span> <span class="pl-ent">Expr</span> <span class="pl-k">=</span> <span class="pl-ent">Val</span> <span class="pl-ent">Int</span> <span class="pl-k">|</span> <span class="pl-ent">Div</span> <span class="pl-ent">Expr</span> <span class="pl-ent">Expr</span>
+
+<span class="pl-k"><span class="pl-c1">&gt;</span></span> safediv <span class="pl-k">::</span> <span class="pl-en"><span class="pl-c1">Int</span></span> <span class="pl-k">-&gt;</span> <span class="pl-en"><span class="pl-c1">Int</span></span> <span class="pl-k">-&gt;</span> <span class="pl-en">MyMaybe</span> <span class="pl-en"><span class="pl-c1">Int</span></span>
+<span class="pl-k"><span class="pl-c1">&gt;</span></span> safediv _ <span class="pl-c1">0</span> <span class="pl-k">=</span> <span class="pl-ent">MyNothing</span>
+<span class="pl-k"><span class="pl-c1">&gt;</span></span> safediv a b <span class="pl-k">=</span> <span class="pl-ent">MyJust</span> <span class="pl-k">$</span> a <span class="pl-k">`div`</span> b
+
+
+<span class="pl-k"><span class="pl-c1">&gt;</span></span> eval <span class="pl-k">::</span> <span class="pl-en">Expr</span> <span class="pl-k">-&gt;</span> <span class="pl-en">MyMaybe</span> <span class="pl-en"><span class="pl-c1">Int</span></span>
+<span class="pl-k"><span class="pl-c1">&gt;</span></span> eval (<span class="pl-ent">Val</span> i) <span class="pl-k">=</span> <span class="pl-ent">MyJust</span> i
+<span class="pl-k"><span class="pl-c1">&gt;</span></span> eval (<span class="pl-ent">Div</span> e1 e2) <span class="pl-k">=</span> <span class="pl-k">case</span> eval e1 <span class="pl-k">of</span>
+<span class="pl-k"><span class="pl-c1">&gt;</span></span>	<span class="pl-ent">MyNothing</span> <span class="pl-k">-&gt;</span> <span class="pl-ent">MyNothing</span>
+<span class="pl-k"><span class="pl-c1">&gt;</span></span>	<span class="pl-ent">MyJust</span> i1 <span class="pl-k">-&gt;</span> <span class="pl-k">case</span> eval e2 <span class="pl-k">of</span> 
+<span class="pl-k"><span class="pl-c1">&gt;</span></span>		<span class="pl-ent">MyNothing</span> <span class="pl-k">-&gt;</span> <span class="pl-ent">MyNothing</span>
+<span class="pl-k"><span class="pl-c1">&gt;</span></span>		<span class="pl-ent">MyJust</span> i2 <span class="pl-k">-&gt;</span> safediv i1 i2
+
+<span class="pl-k"><span class="pl-c1">&gt;</span></span> expr1 <span class="pl-k">=</span> <span class="pl-ent">Div</span> (<span class="pl-ent">Val</span> <span class="pl-c1">3</span>) (<span class="pl-ent">Val</span> <span class="pl-c1">0</span>)
+<span class="pl-k"><span class="pl-c1">&gt;</span></span> expr2 <span class="pl-k">=</span> <span class="pl-ent">Val</span> <span class="pl-c1">3</span>
+<span class="pl-k"><span class="pl-c1">&gt;</span></span> expr3 <span class="pl-k">=</span> <span class="pl-ent">Div</span> (<span class="pl-ent">Val</span> <span class="pl-c1">18</span>) (<span class="pl-ent">Val</span> <span class="pl-c1">2</span>)
+
+
+
+
+<span class="pl-ent">Safediv</span> is <span class="pl-c1">not</span> <span class="pl-c1">pure</span>, so need an alternation<span class="pl-k">.</span>
+<span class="pl-ent">The</span> following code could <span class="pl-c1">not</span> compile<span class="pl-k">.</span>
+
+<span class="pl-k"><span class="pl-c1">&gt;</span></span> <span class="pl-c"><span class="pl-c">--</span>eval1 :: Expr -&gt; MyMaybe Int</span>
+<span class="pl-k"><span class="pl-c1">&gt;</span></span> <span class="pl-c"><span class="pl-c">--</span>eval1 (Val i) = MyJust i</span>
+<span class="pl-k"><span class="pl-c1">&gt;</span></span> <span class="pl-c"><span class="pl-c">--</span>eval1 (Div e1 e2) = zure safediv &lt;#&gt; eval1 e1 &lt;#&gt; eval1 e2</span>
+
+
+<span class="pl-ent">Let's</span> have a simple analyzation <span class="pl-k">:</span>
+	<span class="pl-c1">1</span><span class="pl-k">.</span> what we want is using a function which is get a <span class="pl-c1">pure</span> input 
+           <span class="pl-k">then</span> have an unpure output (with state)<span class="pl-k">.</span>
+	<span class="pl-c1">2</span><span class="pl-k">.</span> <span class="pl-ent">But</span> zure (<span class="pl-c1">pure</span>) can only used to convert a <span class="pl-c1">pure</span> function (from
+  	   <span class="pl-c1">pure</span> to <span class="pl-c1">pure</span>)
+	<span class="pl-c1">3</span><span class="pl-k">.</span> <span class="pl-ent">So</span> we need a way to manage the <span class="pl-k">case</span> from <span class="pl-c1">pure</span> to unpure<span class="pl-k">.</span>
+	<span class="pl-c1">4</span><span class="pl-k">.</span> <span class="pl-ent">This</span> is <span class="pl-k">where</span> monad comes<span class="pl-k">...</span>
+
+<span class="pl-k"><span class="pl-c1">&gt;</span></span> class <span class="pl-ent">Zpplicative</span> z <span class="pl-k">=&gt;</span> <span class="pl-ent">Zonad</span> z <span class="pl-k">where</span>
+<span class="pl-k"><span class="pl-c1">&gt;</span></span> 	zeturn <span class="pl-k">::</span> <span class="pl-smi">a</span> <span class="pl-k">-&gt;</span> <span class="pl-smi">z</span> <span class="pl-smi">a</span>
+<span class="pl-k"><span class="pl-c1">&gt;</span></span> 	<span class="pl-en">(&gt;&gt;#)</span> <span class="pl-k">::</span> <span class="pl-smi">z</span> <span class="pl-smi">a</span> <span class="pl-k">-&gt;</span> (<span class="pl-smi">a</span> <span class="pl-k">-&gt;</span> <span class="pl-smi">z</span> <span class="pl-smi">b</span>) <span class="pl-k">-&gt;</span> <span class="pl-smi">z</span> <span class="pl-smi">b</span>
+
+
+<span class="pl-k"><span class="pl-c1">&gt;</span></span> instance <span class="pl-ent">Zonad</span> <span class="pl-ent">MyMaybe</span> <span class="pl-k">where</span>
+<span class="pl-k"><span class="pl-c1">&gt;</span></span>	zeturn a <span class="pl-k">=</span> <span class="pl-ent">MyJust</span> a
+<span class="pl-k"><span class="pl-c1">&gt;</span></span>	
+<span class="pl-k"><span class="pl-c1">&gt;</span></span>	<span class="pl-ent">MyNothing</span> <span class="pl-k">&gt;&gt;#</span> _ <span class="pl-k">=</span> <span class="pl-ent">MyNothing</span>
+<span class="pl-k"><span class="pl-c1">&gt;</span></span>	<span class="pl-ent">MyJust</span> a <span class="pl-k">&gt;&gt;#</span> f <span class="pl-k">=</span> <span class="pl-k">case</span> f a <span class="pl-k">of</span>
+<span class="pl-k"><span class="pl-c1">&gt;</span></span>		<span class="pl-ent">MyNothing</span> <span class="pl-k">-&gt;</span> <span class="pl-ent">MyNothing</span>
+<span class="pl-k"><span class="pl-c1">&gt;</span></span>		zx <span class="pl-k">-&gt;</span> zx
+
+
+<span class="pl-k"><span class="pl-c1">&gt;</span></span> <span class="pl-c"><span class="pl-c">--</span> </span>
+<span class="pl-k"><span class="pl-c1">&gt;</span></span> eval1 (<span class="pl-ent">Val</span> i ) <span class="pl-k">=</span> <span class="pl-ent">MyJust</span> i
+<span class="pl-k">&gt;--</span> eval1 (<span class="pl-ent">Div</span> e1 e2) <span class="pl-k">=</span> eval1 e1 <span class="pl-k">&gt;&gt;#</span> (<span class="pl-k">\</span>i <span class="pl-k">-&gt;</span> eval1 e2 <span class="pl-k">&gt;&gt;#</span> (<span class="pl-k">\</span>j <span class="pl-k">-&gt;</span> safediv i j))
+<span class="pl-k"><span class="pl-c1">&gt;</span></span> eval1 (<span class="pl-ent">Div</span> e1 e2) <span class="pl-k">=</span> eval1 e1 <span class="pl-k">&gt;&gt;#</span> <span class="pl-k">\</span>i <span class="pl-k">-&gt;</span>
+<span class="pl-k"><span class="pl-c1">&gt;</span></span>		      eval1 e2 <span class="pl-k">&gt;&gt;#</span> <span class="pl-k">\</span>j <span class="pl-k">-&gt;</span>
+<span class="pl-k"><span class="pl-c1">&gt;</span></span>		      safediv i j
+
+
+<span class="pl-k"><span class="pl-c1">&gt;</span></span> instance <span class="pl-ent">Functor</span> <span class="pl-ent">MyMaybe</span> <span class="pl-k">where</span>
+<span class="pl-k"><span class="pl-c1">&gt;</span></span>	<span class="pl-c1">fmap</span> _ <span class="pl-ent">MyNothing</span> <span class="pl-k">=</span> <span class="pl-ent">MyNothing</span>
+<span class="pl-k"><span class="pl-c1">&gt;</span></span>	<span class="pl-c1">fmap</span> f (<span class="pl-ent">MyJust</span> a) <span class="pl-k">=</span> <span class="pl-ent">MyJust</span> <span class="pl-k">$</span> f a
+
+<span class="pl-k"><span class="pl-c1">&gt;</span></span> instance <span class="pl-ent">Applicative</span> <span class="pl-ent">MyMaybe</span> <span class="pl-k">where</span>
+<span class="pl-k"><span class="pl-c1">&gt;</span></span>	<span class="pl-c1">pure</span> a <span class="pl-k">=</span> <span class="pl-ent">MyJust</span> a
+<span class="pl-k"><span class="pl-c1">&gt;</span></span>	<span class="pl-ent">MyNothing</span> <span class="pl-k">&lt;*&gt;</span> _ <span class="pl-k">=</span> <span class="pl-ent">MyNothing</span>
+<span class="pl-k"><span class="pl-c1">&gt;</span></span>	<span class="pl-ent">MyJust</span> f <span class="pl-k">&lt;*&gt;</span> m <span class="pl-k">=</span> <span class="pl-c1">fmap</span> f m
+<span class="pl-k"><span class="pl-c1">&gt;</span></span>	<span class="pl-c"><span class="pl-c">--</span> the below is the definition from scratch </span>
+<span class="pl-k"><span class="pl-c1">&gt;</span></span>	<span class="pl-c"><span class="pl-c">--</span>MyJust f &lt;*&gt; MyNothing = MyNothing</span>
+<span class="pl-k"><span class="pl-c1">&gt;</span></span>	<span class="pl-c"><span class="pl-c">--</span>MyJust f &lt;*&gt; MyJust a = MyJust $ f a</span>
+
+<span class="pl-k"><span class="pl-c1">&gt;</span></span> instance <span class="pl-ent">Monad</span> <span class="pl-ent">MyMaybe</span> <span class="pl-k">where</span>
+<span class="pl-k"><span class="pl-c1">&gt;</span></span>	<span class="pl-c1">return</span> <span class="pl-k">=</span> <span class="pl-c1">pure</span>
+<span class="pl-k"><span class="pl-c1">&gt;</span></span>	<span class="pl-c"><span class="pl-c">--</span>return a = MyJust a</span>
+<span class="pl-k"><span class="pl-c1">&gt;</span></span>	<span class="pl-c"><span class="pl-c">--</span> usually we call `&gt;&gt;=` bind</span>
+<span class="pl-k"><span class="pl-c1">&gt;</span></span>	<span class="pl-ent">MyNothing</span> <span class="pl-k">&gt;&gt;=</span> _ <span class="pl-k">=</span> <span class="pl-ent">MyNothing</span>
+<span class="pl-k"><span class="pl-c1">&gt;</span></span>	<span class="pl-ent">MyJust</span> a <span class="pl-k">&gt;&gt;=</span> f <span class="pl-k">=</span> f a
+
+<span class="pl-k"><span class="pl-c1">&gt;</span></span>
+<span class="pl-k"><span class="pl-c1">&gt;</span></span> eval2 (<span class="pl-ent">Val</span> i) <span class="pl-k">=</span> <span class="pl-ent">MyJust</span> i
+<span class="pl-k"><span class="pl-c1">&gt;</span></span> eval2 (<span class="pl-ent">Div</span> e1 e2) <span class="pl-k">=</span> <span class="pl-k">do</span> i <span class="pl-k">&lt;-</span> eval2 e1
+<span class="pl-k"><span class="pl-c1">&gt;</span></span>			 j <span class="pl-k">&lt;-</span> eval2 e2
+<span class="pl-k"><span class="pl-c1">&gt;</span></span>			 safediv i j
+
+<span class="pl-ent">State</span> <span class="pl-ent">Monad</span>
+
+<span class="pl-k"><span class="pl-c1">&gt;</span></span> <span class="pl-k">type</span> <span class="pl-ent">State</span> <span class="pl-k">=</span> <span class="pl-ent">Int</span>
+<span class="pl-k"><span class="pl-c1">&gt;</span></span> <span class="pl-k">newtype</span> <span class="pl-ent">ST</span> a <span class="pl-k">=</span> <span class="pl-ent">S</span>( <span class="pl-ent">State</span> <span class="pl-k">-&gt;</span> (a, <span class="pl-ent">State</span>)) 
+<span class="pl-k"><span class="pl-c1">&gt;</span></span> app <span class="pl-k">::</span> <span class="pl-en">ST</span> <span class="pl-smi">a</span> <span class="pl-k">-&gt;</span> <span class="pl-en">State</span> <span class="pl-k">-&gt;</span> (<span class="pl-smi">a</span>, <span class="pl-en">State</span>)
+<span class="pl-k"><span class="pl-c1">&gt;</span></span> app (<span class="pl-ent">S</span> st) s <span class="pl-k">=</span> st s
+
+<span class="pl-k"><span class="pl-c1">&gt;</span></span> instance <span class="pl-ent">Functor</span> <span class="pl-ent">ST</span> <span class="pl-k">where</span>
+<span class="pl-k"><span class="pl-c1">&gt;</span></span>	<span class="pl-c"><span class="pl-c">--</span>fmap f (S st) = S(\s -&gt; let (a, s') = st s in (f a, s'))</span>
+<span class="pl-k"><span class="pl-c1">&gt;</span></span>	<span class="pl-c1">fmap</span> f sta <span class="pl-k">=</span> <span class="pl-ent">S</span>(<span class="pl-k">\</span>s <span class="pl-k">-&gt;</span> <span class="pl-k">let</span> (a, s') <span class="pl-k">=</span> app sta s <span class="pl-k">in</span> (f a, s'))
+
+<span class="pl-k"><span class="pl-c1">&gt;</span></span> instance <span class="pl-ent">Applicative</span> <span class="pl-ent">ST</span> <span class="pl-k">where</span>
+<span class="pl-k"><span class="pl-c1">&gt;</span></span>	<span class="pl-c"><span class="pl-c">--</span> pure :: a -&gt; ST a</span>
+<span class="pl-k"><span class="pl-c1">&gt;</span></span>	<span class="pl-c1">pure</span> a <span class="pl-k">=</span> <span class="pl-ent">S</span> (<span class="pl-k">\</span>s <span class="pl-k">-&gt;</span> (a, s))
+<span class="pl-k"><span class="pl-c1">&gt;</span></span>	<span class="pl-c"><span class="pl-c">--</span> (&lt;*&gt;) :: ST (a-&gt;b) -&gt; ST a -&gt; ST b</span>
+<span class="pl-k"><span class="pl-c1">&gt;</span></span>	<span class="pl-c"><span class="pl-c">--</span>stf &lt;*&gt; sta = S (\s -&gt; let (f, s') = app stf s</span>
+<span class="pl-k"><span class="pl-c1">&gt;</span></span>				   <span class="pl-c"><span class="pl-c">--</span>(a, s'') = app sta s' in (f a, s''))</span>
+<span class="pl-k"><span class="pl-c1">&gt;</span></span>	stf <span class="pl-k">&lt;*&gt;</span> sta <span class="pl-k">=</span> <span class="pl-ent">S</span> (<span class="pl-k">\</span>s <span class="pl-k">-&gt;</span> <span class="pl-k">let</span> (f, s') <span class="pl-k">=</span> app stf s <span class="pl-k">in</span> app (<span class="pl-c1">fmap</span> f sta) s')
+
+<span class="pl-k"><span class="pl-c1">&gt;</span></span> instance <span class="pl-ent">Monad</span> <span class="pl-ent">ST</span> <span class="pl-k">where</span>
+<span class="pl-k"><span class="pl-c1">&gt;</span></span>	<span class="pl-c"><span class="pl-c">--</span> return :: a -&gt; ST a</span>
+<span class="pl-k"><span class="pl-c1">&gt;</span></span>	<span class="pl-c"><span class="pl-c">--</span>return a = S (\s -&gt; (a, s))</span>
+<span class="pl-k"><span class="pl-c1">&gt;</span></span>	<span class="pl-c1">return</span> <span class="pl-k">=</span> <span class="pl-c1">pure</span>
+<span class="pl-k"><span class="pl-c1">&gt;</span></span>	<span class="pl-c"><span class="pl-c">--</span> (&gt;&gt;=) :: sta -&gt; (a -&gt; stb) -&gt; stb</span>
+<span class="pl-k"><span class="pl-c1">&gt;</span></span>	sta <span class="pl-k">&gt;&gt;=</span> f <span class="pl-k">=</span> <span class="pl-ent">S</span>(<span class="pl-k">\</span>s <span class="pl-k">-&gt;</span> <span class="pl-k">let</span> (a, s') <span class="pl-k">=</span> app sta s <span class="pl-k">in</span> app (f a) s')
+<span class="pl-k"><span class="pl-c1">&gt;</span></span>	
+
+<span class="pl-ent">State</span> <span class="pl-ent">Monad</span> <span class="pl-ent">Application</span>
+
+<span class="pl-k"><span class="pl-c1">&gt;</span></span> <span class="pl-k">data</span> <span class="pl-ent">Tree</span> a <span class="pl-k">=</span> <span class="pl-ent">Leaf</span> a <span class="pl-k">|</span> <span class="pl-ent">Node</span> (<span class="pl-ent">Tree</span> a) (<span class="pl-ent">Tree</span> a) <span class="pl-k">deriving</span> <span class="pl-ent">Show</span>
+
+<span class="pl-ent">Try</span> to define a function that label each leaf <span class="pl-k">in</span> the tree<span class="pl-k">.</span>
+
+<span class="pl-k"><span class="pl-c1">&gt;</span></span> rlabel <span class="pl-k">::</span> <span class="pl-en">Tree</span> <span class="pl-smi">a</span> <span class="pl-k">-&gt;</span> <span class="pl-en"><span class="pl-c1">Int</span></span> <span class="pl-k">-&gt;</span> (<span class="pl-en">Tree</span> <span class="pl-en"><span class="pl-c1">Int</span></span>, <span class="pl-en"><span class="pl-c1">Int</span></span>)
+<span class="pl-k"><span class="pl-c1">&gt;</span></span> rlabel (<span class="pl-ent">Leaf</span> _) i <span class="pl-k">=</span> (<span class="pl-ent">Leaf</span> i, i <span class="pl-k">+</span> <span class="pl-c1">1</span>)
+<span class="pl-k"><span class="pl-c1">&gt;</span></span> rlabel (<span class="pl-ent">Node</span> t1 t2) i <span class="pl-k">=</span> (<span class="pl-ent">Node</span> t1' t2', i'')
+<span class="pl-k"><span class="pl-c1">&gt;</span></span>	<span class="pl-k">where</span> (t1', i') <span class="pl-k">=</span> rlabel t1 i 
+<span class="pl-k"><span class="pl-c1">&gt;</span></span>	      (t2', i'') <span class="pl-k">=</span> rlabel t2 i'
+
+<span class="pl-k"><span class="pl-c1">&gt;</span></span> <span class="pl-c"><span class="pl-c">--</span> debug </span>
+<span class="pl-k"><span class="pl-c1">&gt;</span></span> tree1 <span class="pl-k">=</span> <span class="pl-ent">Leaf</span> <span class="pl-s"><span class="pl-pds">'</span>a<span class="pl-pds">'</span></span>
+<span class="pl-k"><span class="pl-c1">&gt;</span></span> tree2 <span class="pl-k">=</span> <span class="pl-ent">Node</span> (<span class="pl-ent">Node</span> (<span class="pl-ent">Leaf</span> <span class="pl-s"><span class="pl-pds">'</span>a<span class="pl-pds">'</span></span>) (<span class="pl-ent">Leaf</span> <span class="pl-s"><span class="pl-pds">'</span>b<span class="pl-pds">'</span></span>)) (<span class="pl-ent">Leaf</span> <span class="pl-s"><span class="pl-pds">'</span>c<span class="pl-pds">'</span></span>)
+
+<span class="pl-k"><span class="pl-c1">&gt;</span></span> rlabel1 <span class="pl-k">::</span> <span class="pl-en">Tree</span> <span class="pl-smi">a</span> <span class="pl-k">-&gt;</span> <span class="pl-en">ST</span> (<span class="pl-en">Tree</span> <span class="pl-en"><span class="pl-c1">Int</span></span>)
+<span class="pl-k"><span class="pl-c1">&gt;</span></span> rlabel1 (<span class="pl-ent">Leaf</span> _) <span class="pl-k">=</span> <span class="pl-ent">S</span>(<span class="pl-k">\</span>s <span class="pl-k">-&gt;</span> (<span class="pl-ent">Leaf</span> s, s<span class="pl-k">+</span><span class="pl-c1">1</span>))
+<span class="pl-k"><span class="pl-c1">&gt;</span></span> rlabel1 (<span class="pl-ent">Node</span> t1 t2) <span class="pl-k">=</span> <span class="pl-ent">S</span>(<span class="pl-k">\</span>s <span class="pl-k">-&gt;</span> <span class="pl-k">let</span> (t1', s') <span class="pl-k">=</span> app (rlabel1 t1) s
+<span class="pl-k"><span class="pl-c1">&gt;</span></span>				     (t2', s'') <span class="pl-k">=</span> app (rlabel1 t2) s' <span class="pl-k">in</span>
+<span class="pl-k"><span class="pl-c1">&gt;</span></span>				 (<span class="pl-ent">Node</span> t1' t2', s''))
+
+<span class="pl-k"><span class="pl-c1">&gt;</span></span> fresh <span class="pl-k">::</span> <span class="pl-en">ST</span> <span class="pl-en"><span class="pl-c1">Int</span></span>
+<span class="pl-k"><span class="pl-c1">&gt;</span></span> fresh <span class="pl-k">=</span> <span class="pl-ent">S</span>(<span class="pl-k">\</span>s <span class="pl-k">-&gt;</span> (s, s<span class="pl-k">+</span><span class="pl-c1">1</span>))
+
+<span class="pl-k"><span class="pl-c1">&gt;</span></span> rlabel2 <span class="pl-k">::</span> <span class="pl-en">Tree</span> <span class="pl-smi">a</span> <span class="pl-k">-&gt;</span> <span class="pl-en">ST</span> (<span class="pl-en">Tree</span> <span class="pl-en"><span class="pl-c1">Int</span></span>)
+<span class="pl-k"><span class="pl-c1">&gt;</span></span> <span class="pl-c"><span class="pl-c">--</span>rlabel2 (Leaf _) = fresh &gt;&gt;= (\s -&gt; return (Leaf s))</span>
+<span class="pl-k"><span class="pl-c1">&gt;</span></span> rlabel2 (<span class="pl-ent">Leaf</span> _) <span class="pl-k">=</span> fresh <span class="pl-k">&gt;&gt;=</span> <span class="pl-c1">return</span> <span class="pl-k">.</span> <span class="pl-ent">Leaf</span>
+<span class="pl-k"><span class="pl-c1">&gt;</span></span> <span class="pl-c"><span class="pl-c">--</span>rlabel2 (Node t1 t2) = rlabel2 t1 &gt;&gt;= (\t1' -&gt; rlabel2 t2 &gt;&gt;= (\t2' -&gt; return (Node t1' t2')))</span>
+<span class="pl-k"><span class="pl-c1">&gt;</span></span> rlabel2 (<span class="pl-ent">Node</span> t1 t2) <span class="pl-k">=</span> rlabel2 t1 <span class="pl-k">&gt;&gt;=</span> <span class="pl-k">\</span>t1' <span class="pl-k">-&gt;</span>
+<span class="pl-k"><span class="pl-c1">&gt;</span></span>                        rlabel2 t2 <span class="pl-k">&gt;&gt;=</span> <span class="pl-k">\</span>t2' <span class="pl-k">-&gt;</span> 
+<span class="pl-k"><span class="pl-c1">&gt;</span></span>	 	 	 <span class="pl-c1">return</span> (<span class="pl-ent">Node</span> t1' t2')
+
+<span class="pl-k"><span class="pl-c1">&gt;</span></span> rlabel3 <span class="pl-k">::</span> <span class="pl-en">Tree</span> <span class="pl-smi">a</span> <span class="pl-k">-&gt;</span> <span class="pl-en">ST</span> (<span class="pl-en">Tree</span> <span class="pl-en"><span class="pl-c1">Int</span></span>)
+<span class="pl-k"><span class="pl-c1">&gt;</span></span> rlabel3 (<span class="pl-ent">Leaf</span> _) <span class="pl-k">=</span> <span class="pl-k">do</span> n <span class="pl-k">&lt;-</span> fresh
+<span class="pl-k"><span class="pl-c1">&gt;</span></span>		     	<span class="pl-c1">return</span> (<span class="pl-ent">Leaf</span> n)	
+<span class="pl-k"><span class="pl-c1">&gt;</span></span> rlabel3 (<span class="pl-ent">Node</span> t1 t2) <span class="pl-k">=</span> <span class="pl-k">do</span> t1' <span class="pl-k">&lt;-</span> rlabel3 t1
+<span class="pl-k"><span class="pl-c1">&gt;</span></span>			    t2' <span class="pl-k">&lt;-</span> rlabel3 t2
+<span class="pl-k"><span class="pl-c1">&gt;</span></span>			    <span class="pl-c1">return</span> (<span class="pl-ent">Node</span> t1' t2')
+
+
+<span class="pl-ent">Some</span> commonly used operators <span class="pl-c1">and</span> functions<span class="pl-k">.</span>
+
+	<span class="pl-k">+</span> <span class="pl-k">-</span> <span class="pl-k">*</span> (<span class="pl-ent">Num</span> a)
+	<span class="pl-c1">4</span> <span class="pl-k">/</span> <span class="pl-c1">2</span> <span class="pl-k">=</span> <span class="pl-c1">2.0</span> (<span class="pl-ent">Fractional</span> a)
+	<span class="pl-c1">4</span> <span class="pl-k">`div`</span> <span class="pl-c1">2</span> <span class="pl-k">=</span> <span class="pl-c1">0</span> (<span class="pl-ent">Integral</span> a)
+	<span class="pl-c1">4</span> <span class="pl-k">`mod`</span> <span class="pl-c1">2</span> <span class="pl-k">=</span> <span class="pl-c1">0</span> (<span class="pl-ent">Integral</span> a)
+	<span class="pl-c1">2</span> <span class="pl-k">^</span> <span class="pl-c1">3</span> <span class="pl-k">=</span> <span class="pl-c1">8</span>
+
+	<span class="pl-c1">not</span> <span class="pl-ent"><span class="pl-c1">True</span></span> <span class="pl-k">=</span> <span class="pl-ent"><span class="pl-c1">False</span></span>
+
+	<span class="pl-ent"><span class="pl-c1">True</span></span> <span class="pl-k">&amp;&amp;</span> <span class="pl-ent"><span class="pl-c1">True</span></span> <span class="pl-k">=</span> <span class="pl-ent"><span class="pl-c1">True</span></span>
+	<span class="pl-ent"><span class="pl-c1">True</span></span> <span class="pl-k">||</span> <span class="pl-ent"><span class="pl-c1">False</span></span> <span class="pl-k">=</span> <span class="pl-ent"><span class="pl-c1">True</span></span>
+
+	<span class="pl-c1">3</span> <span class="pl-k">==</span> <span class="pl-c1">4</span> <span class="pl-k">=</span> <span class="pl-ent"><span class="pl-c1">False</span></span>
+	<span class="pl-c1">3</span> <span class="pl-k">/=</span> <span class="pl-c1">4</span> <span class="pl-k">=</span> <span class="pl-ent"><span class="pl-c1">True</span></span>
+
+	<span class="pl-c1">1</span> <span class="pl-k">:</span> [<span class="pl-c1">1</span>,<span class="pl-c1">2</span>,<span class="pl-c1">3</span>] <span class="pl-k">=</span> [<span class="pl-c1">1</span>,<span class="pl-c1">1</span>,<span class="pl-c1">2</span>,<span class="pl-c1">3</span>]
+	<span class="pl-c1">2</span> <span class="pl-k">`elem`</span> [<span class="pl-c1">1</span>,<span class="pl-c1">2</span>,<span class="pl-c1">3</span>] <span class="pl-k">=</span> <span class="pl-ent"><span class="pl-c1">True</span></span>
+	<span class="pl-c1">4</span> <span class="pl-k">`elem`</span> [<span class="pl-c1">1</span>,<span class="pl-c1">2</span>,<span class="pl-c1">3</span>] <span class="pl-k">=</span> <span class="pl-ent"><span class="pl-c1">False</span></span>
+	[<span class="pl-c1">1</span>,<span class="pl-c1">2</span>,<span class="pl-c1">3</span>] <span class="pl-k">++</span> [<span class="pl-c1">4</span>,<span class="pl-c1">5</span>] <span class="pl-k">=</span> [<span class="pl-c1">1</span>,<span class="pl-c1">2</span>,<span class="pl-c1">3</span>,<span class="pl-c1">4</span>,<span class="pl-c1">5</span>]
+	[<span class="pl-c1">1</span>,<span class="pl-c1">2</span>,<span class="pl-c1">3</span>] <span class="pl-k">!!</span> <span class="pl-c1">0</span> <span class="pl-k">=</span> <span class="pl-c1">1</span>
+	<span class="pl-c1">head</span> [<span class="pl-c1">1</span>,<span class="pl-c1">2</span>,<span class="pl-c1">3</span>] <span class="pl-k">=</span> <span class="pl-c1">1</span>
+	<span class="pl-c1">tail</span> [<span class="pl-c1">1</span>,<span class="pl-c1">2</span>,<span class="pl-c1">3</span>] <span class="pl-k">=</span> [<span class="pl-c1">2</span>,<span class="pl-c1">3</span>]
+	<span class="pl-c1">init</span> [<span class="pl-c1">1</span>,<span class="pl-c1">2</span>,<span class="pl-c1">3</span>] <span class="pl-k">=</span> [<span class="pl-c1">1</span>,<span class="pl-c1">2</span>]
+	<span class="pl-c1">last</span> [<span class="pl-c1">1</span>,<span class="pl-c1">2</span>,<span class="pl-c1">3</span>] <span class="pl-k">=</span> <span class="pl-c1">3</span>
+	<span class="pl-c1">take</span> <span class="pl-c1">3</span> [<span class="pl-c1">1</span>,<span class="pl-c1">2</span>,<span class="pl-c1">3</span>,<span class="pl-c1">4</span>] <span class="pl-k">=</span> [<span class="pl-c1">1</span>,<span class="pl-c1">2</span>,<span class="pl-c1">3</span>]
+	<span class="pl-c1">drop</span> <span class="pl-c1">3</span> [<span class="pl-c1">1</span>,<span class="pl-c1">2</span>,<span class="pl-c1">3</span>,<span class="pl-c1">4</span>] <span class="pl-k">=</span> [<span class="pl-c1">4</span>]
+	<span class="pl-c1">length</span> [<span class="pl-c1">1</span>,<span class="pl-c1">2</span>,<span class="pl-c1">3</span>] <span class="pl-k">=</span> <span class="pl-c1">3</span>
+	<span class="pl-c1">null</span> <span class="pl-c1">[]</span> <span class="pl-k">=</span> <span class="pl-ent"><span class="pl-c1">True</span></span>
+	<span class="pl-c1">and</span> [<span class="pl-ent"><span class="pl-c1">True</span></span>, <span class="pl-ent"><span class="pl-c1">True</span></span>, <span class="pl-ent"><span class="pl-c1">True</span></span>] <span class="pl-k">=</span> <span class="pl-ent"><span class="pl-c1">True</span></span>
+	<span class="pl-c1">or</span> [<span class="pl-ent"><span class="pl-c1">True</span></span>, <span class="pl-ent"><span class="pl-c1">True</span></span>, <span class="pl-ent"><span class="pl-c1">False</span></span>] <span class="pl-k">=</span> <span class="pl-ent">Trule</span>
+	<span class="pl-c1">map</span> (<span class="pl-k">+</span><span class="pl-c1">1</span>) [<span class="pl-c1">1</span>,<span class="pl-c1">2</span>,<span class="pl-c1">3</span>,<span class="pl-c1">4</span>] <span class="pl-k">=</span> [<span class="pl-c1">2</span>,<span class="pl-c1">3</span>,<span class="pl-c1">4</span>,<span class="pl-c1">5</span>]
+	<span class="pl-c1">filter</span> <span class="pl-c1">even</span> [<span class="pl-c1">1</span>,<span class="pl-c1">2</span>,<span class="pl-c1">3</span>,<span class="pl-c1">4</span>] <span class="pl-k">=</span> [<span class="pl-c1">2</span>,<span class="pl-c1">4</span>]
+	<span class="pl-c1">takeWhile</span> <span class="pl-c1">odd</span> [<span class="pl-c1">1</span>,<span class="pl-c1">2</span>,<span class="pl-c1">3</span>,<span class="pl-c1">4</span>,<span class="pl-c1">5</span>] <span class="pl-k">=</span> [<span class="pl-c1">1</span>]
+	<span class="pl-c1">dropWhile</span> <span class="pl-c1">odd</span> [<span class="pl-c1">1</span>,<span class="pl-c1">3</span>,<span class="pl-c1">5</span>,<span class="pl-c1">4</span>,<span class="pl-c1">7</span>] <span class="pl-k">=</span> [<span class="pl-c1">4</span>,<span class="pl-c1">7</span>]
+	<span class="pl-c1">any</span> <span class="pl-c1">even</span> [<span class="pl-c1">1</span>,<span class="pl-c1">2</span>,<span class="pl-c1">3</span>,<span class="pl-c1">4</span>] <span class="pl-k">=</span> <span class="pl-ent"><span class="pl-c1">True</span></span>
+	<span class="pl-c1">all</span> <span class="pl-c1">even</span> [<span class="pl-c1">1</span>,<span class="pl-c1">2</span>,<span class="pl-c1">3</span>,<span class="pl-c1">4</span>] <span class="pl-k">=</span> <span class="pl-ent"><span class="pl-c1">True</span></span>
+	<span class="pl-c1">repeat</span> <span class="pl-c1">1</span> <span class="pl-k">=</span> [<span class="pl-c1">1</span>,<span class="pl-c1">1</span>,<span class="pl-c1">1</span>,<span class="pl-c1">1</span><span class="pl-k">...</span>]
+	<span class="pl-c1">reverse</span> [<span class="pl-c1">1</span>,<span class="pl-c1">2</span>,<span class="pl-c1">3</span>] <span class="pl-k">=</span> [<span class="pl-c1">3</span>,<span class="pl-c1">2</span>,<span class="pl-c1">1</span>]
+	<span class="pl-c1">zip</span> [<span class="pl-c1">1</span>,<span class="pl-c1">2</span>,<span class="pl-c1">3</span>] <span class="pl-s"><span class="pl-pds">"</span>abcde<span class="pl-pds">"</span></span> <span class="pl-k">=</span> [(<span class="pl-c1">1</span>,<span class="pl-s"><span class="pl-pds">'</span>a<span class="pl-pds">'</span></span>), (<span class="pl-c1">2</span>, <span class="pl-s"><span class="pl-pds">'</span>b<span class="pl-pds">'</span></span>), (<span class="pl-c1">3</span>, <span class="pl-s"><span class="pl-pds">'</span>c<span class="pl-pds">'</span></span>)]
+	<span class="pl-c1">zip</span> [<span class="pl-c1">1</span>,<span class="pl-c1">2</span>,<span class="pl-c1">3</span>] <span class="pl-s"><span class="pl-pds">"</span><span class="pl-pds">"</span></span> <span class="pl-k">=</span> <span class="pl-c1">[]</span>
+	<span class="pl-c1">fst</span> (<span class="pl-c1">1</span>,<span class="pl-c1">2</span>) <span class="pl-k">=</span> <span class="pl-c1">1</span>
+	<span class="pl-c1">snd</span> (<span class="pl-c1">1</span>,<span class="pl-c1">2</span>) <span class="pl-k">=</span> <span class="pl-c1">2</span>
+	<span class="pl-c1">splitAt</span> <span class="pl-c1">2</span> [<span class="pl-c1">1</span>,<span class="pl-c1">2</span>,<span class="pl-c1">3</span>,<span class="pl-c1">4</span>] <span class="pl-k">=</span> ([<span class="pl-c1">1</span>,<span class="pl-c1">2</span>], [<span class="pl-c1">3</span>,<span class="pl-c1">4</span>])
+	<span class="pl-c1">id</span> [<span class="pl-c1">1</span>,<span class="pl-c1">2</span>,<span class="pl-c1">3</span>] <span class="pl-k">=</span> [<span class="pl-c1">1</span>,<span class="pl-c1">2</span>,<span class="pl-c1">3</span>]
+	<span class="pl-c1">sum</span> [<span class="pl-c1">1</span>,<span class="pl-c1">2</span>,<span class="pl-c1">3</span>] <span class="pl-k">=</span> <span class="pl-c1">6</span>
+	<span class="pl-c1">product</span> [<span class="pl-c1">5</span>,<span class="pl-c1">5</span>,<span class="pl-c1">5</span>] <span class="pl-k">=</span> <span class="pl-c1">125</span>
+
+	<span class="pl-c"><span class="pl-c">--</span> high order function</span>
+	<span class="pl-en">foldr</span> <span class="pl-k">::</span> (<span class="pl-smi">a</span> <span class="pl-k">-&gt;</span> <span class="pl-smi">b</span> <span class="pl-k">-&gt;</span> <span class="pl-smi">b</span>) <span class="pl-k">-&gt;</span> <span class="pl-smi">b</span> <span class="pl-k">-&gt;</span> [<span class="pl-smi">a</span>] <span class="pl-k">-&gt;</span> <span class="pl-smi">b</span>
+	<span class="pl-c1">foldr</span> f v <span class="pl-c1">[]</span> <span class="pl-k">=</span> v
+	<span class="pl-c1">foldr</span> f v (x<span class="pl-k">:</span>xs) <span class="pl-k">=</span> f x (<span class="pl-c1">foldr</span> f v xs)
+
+	<span class="pl-en">foldl</span> <span class="pl-k">::</span> (<span class="pl-smi">a</span> <span class="pl-k">-&gt;</span> <span class="pl-smi">b</span> <span class="pl-k">-&gt;</span> <span class="pl-smi">a</span>) <span class="pl-k">-&gt;</span> <span class="pl-smi">a</span> <span class="pl-k">-&gt;</span> [<span class="pl-smi">b</span>] <span class="pl-k">-&gt;</span> <span class="pl-smi">a</span>
+	<span class="pl-c1">foldl</span> f v <span class="pl-c1">[]</span> <span class="pl-k">=</span> v
+	<span class="pl-c1">foldl</span> f v (x<span class="pl-k">:</span>xs) <span class="pl-k">=</span> <span class="pl-c1">foldr</span> f (f v x) xs
+
+	<span class="pl-en">(.)</span> <span class="pl-k">::</span> (<span class="pl-smi">b</span> <span class="pl-k">-&gt;</span> <span class="pl-smi">c</span>) <span class="pl-k">-&gt;</span> (<span class="pl-smi">a</span> <span class="pl-k">-&gt;</span> <span class="pl-smi">b</span>) <span class="pl-k">-&gt;</span> (<span class="pl-smi">a</span> <span class="pl-k">-&gt;</span> <span class="pl-smi">c</span>)
+	f <span class="pl-k">.</span> g <span class="pl-k">=</span> <span class="pl-k">\</span>x <span class="pl-k">-&gt;</span> f (g x)
+</pre></div>

@@ -1,0 +1,128 @@
+<p>Python is an easy and elegant language, but this is not always the case. (At least for me 3&gt;).<br>
+This article will hit one of the dark corner -- import. <strong>The detail below is my personal understanding, if I got anything wrong,<br>
+please do not hesitate to post me an issue.</strong></p>
+<h3>Starter</h3>
+<p>The article will be examples based to make sure it's human readable.</p>
+<p>Current directory Structure :</p>
+<div class="highlight highlight-source-shell"><pre>python:
+    nzhl <span class="pl-c1">:</span>
+        - m1.py
+        - m2.py</pre></div>
+<p>Source file m1.py :</p>
+<div class="highlight highlight-source-python"><pre><span class="pl-k">import</span> sys
+<span class="pl-c1">print</span>(sys.path)
+
+<span class="pl-k">import</span> m2
+m2.say()
+</pre></div>
+<p>Source file m2.py :</p>
+<div class="highlight highlight-source-python"><pre><span class="pl-k">def</span> <span class="pl-en">say</span>():
+    <span class="pl-k">if</span> <span class="pl-c1">__package__</span> <span class="pl-k">==</span> <span class="pl-s"><span class="pl-pds">"</span><span class="pl-pds">"</span></span>:
+        <span class="pl-c1">print</span>(<span class="pl-s"><span class="pl-pds">"</span>__package__ is empty<span class="pl-pds">"</span></span>)
+    <span class="pl-k">else</span>:
+        <span class="pl-c1">print</span>(<span class="pl-c1">__package__</span>)
+    <span class="pl-c1">print</span>(<span class="pl-c1">__name__</span>)</pre></div>
+<p>Try to run m1.py use command <code>python m1.py</code> inside nzhl will output:</p>
+<div class="highlight highlight-source-shell"><pre>[<span class="pl-s"><span class="pl-pds">'</span>path_to_your_current_dir/python/nzhl/<span class="pl-pds">'</span></span>, ...]
+__package__ is empty
+m2</pre></div>
+<p>This is a very easy example, but are you sure about how it works ?</p>
+<ul>
+<li>when you try to import a module, the python interpreter will actually try to search from two source :
+<ul>
+<li>the paths list which is pointed by environment variable <code>PYTHONPATH</code>, can use <code>sys.path</code> to get it in your code.</li>
+<li>standard library, usually accompanied with python interpreter.</li>
+</ul>
+</li>
+</ul>
+<p>So what happened when you import <code>m2</code> here ? The answer is, when you try to run a python script, the interpreter will set the script itself as a top-level module,<br>
+and add it's current directory into <code>PYTHONPATH</code> temporarily.</p>
+<ul>
+<li>here means once the script gets end, the current directory will be deleted from the path immediately.</li>
+<li>both <code>python m1.py</code> or <code>python nzhl/m1</code> will set the current directory as <code>nzhl</code>.</li>
+</ul>
+<p>The above example does not involve package, but our following discussion will all be based on package. So just do a minor change to the directory structure :</p>
+<div class="highlight highlight-source-shell"><pre>python:
+    - m.py
+    nzhl <span class="pl-c1">:</span>
+        - __init__.py
+        - m1.py
+        - m2.py</pre></div>
+<p>New file m.py:</p>
+<div class="highlight highlight-source-python"><pre><span class="pl-k">import</span> nzhl.m1</pre></div>
+<p>Now if you try to run script m.py at python directory :</p>
+<div class="highlight highlight-source-shell"><pre>[<span class="pl-s"><span class="pl-pds">'</span>path_to_your_current_dir/python/<span class="pl-pds">'</span></span>, ...]
+Traceback
+...
+ModuleNotFoundError: No module named <span class="pl-s"><span class="pl-pds">'</span>m2<span class="pl-pds">'</span></span></pre></div>
+<p>So why we can't find module m2 ? If you understand what I said above, I think you will know answer. If you are confused, focus you eyes on the first line of<br>
+the output, you will find the <code>nzhl</code> directory is no longer in side the <code>PYTHONPATH</code>. That's why we can't find the m2 module. Now we meet the problem, how can<br>
+we import a module from another which are in the same package ?</p>
+<h3>Relative Import</h3>
+<p>In the old python 2 age, the <code>relative import</code> is the default import style.</p>
+<ul>
+<li><code>.</code> to denote the current directory.</li>
+<li><code>..</code> to denote the parent directory.</li>
+<li><code>...</code> to denote the grandpa directory.</li>
+<li>It's just like Unix file path, but make sure here directory should all be package.</li>
+</ul>
+<p>So let's change m1.py:</p>
+<div class="highlight highlight-source-python"><pre><span class="pl-k">import</span> sys
+<span class="pl-c1">print</span>(sys.path)
+
+<span class="pl-k">from</span> . <span class="pl-k">import</span> m2
+m2.say()</pre></div>
+<p>Run <code>python m.py</code> at python again now you will see :</p>
+<div class="highlight highlight-source-shell"><pre>[<span class="pl-s"><span class="pl-pds">'</span>path_to_your_current_dir/python/<span class="pl-pds">'</span></span>, ...]
+nzhl
+nzhl.m2</pre></div>
+<p>This above method is called explicit relative import, <strong>it can be used in python 3.</strong><br>
+In fact there is also a name for <code>import name</code> used in a package directory, it's called implicit relative import.<br>
+But it tends to make people confused. For example :</p>
+<div class="highlight highlight-source-shell"><pre>nzhl:
+    __init__.py
+    m1.py
+    copy.py</pre></div>
+<h4>Implicit Import</h4>
+<p>If you write <code>import copy</code>, it's not clear whether it refers to a top-level module or to another module inside the package.<br>
+ie. <code>import copy</code> can easily shadow the standard library <code>copy</code> before you know it. Luckily, this bug prone concept has been<br>
+deprecated in python 3. And in python 3 you can only use this way to import package which is inside the path -- <code>PYTHONPATH</code><br>
+(include script running directory like the first example).</p>
+<h4>Analysis</h4>
+<ol>
+<li>
+<p>If you try to run <code>python m1.py</code>, you will find you get error again. This is a defect of relative import,<br>
+you can no longer directly run the script inside, they can only be imported.</p>
+</li>
+<li>
+<p>When you are maintaining a really complex package, which means you got packages inside packages, using relative<br>
+import maybe a good idea because in this way you won't going to hard-code your package name into your code,<br>
+so it would be easy if you want to rename you package.</p>
+</li>
+</ol>
+<h3>Absolute Import</h3>
+<p><strong>The default import method for python 3.</strong></p>
+<p>So let's change m1.py:</p>
+<div class="highlight highlight-source-python"><pre><span class="pl-k">import</span> sys
+<span class="pl-c1">print</span>(sys.path)
+
+<span class="pl-k">from</span> nzhl <span class="pl-k">import</span> m2
+m2.say()</pre></div>
+<p>Try to run m.py again now you will see :</p>
+<div class="highlight highlight-source-shell"><pre>[<span class="pl-s"><span class="pl-pds">'</span>path_to_your_current_dir/python/<span class="pl-pds">'</span></span>, ...]
+nzhl
+nzhl.m2</pre></div>
+<h4>Analysis</h4>
+<ol>
+<li>
+<p>Since absolute import make it how clear that which package is actually imported, so it's recommended when<br>
+your package size is relatively small.</p>
+</li>
+<li>
+<p>But if you try to run m1.py directly, you will still get error.<br>
+The reason for the error is obvious, as we mentioned before, if you run a script in side<br>
+a package, it will be regarded as a top module rather than a module inside the package. So<br>
+in fact the directory nzhl has been added into the sys.path, this makes the package nzhl<br>
+invisible. <strong>So you can not run the script directly in neither way.</strong></p>
+</li>
+</ol>

@@ -1,0 +1,61 @@
+<h3>Suitable Situation</h3>
+<p>The following two methods are usually used to have a roughly estimate about a recurrence relation question.</p>
+<blockquote>
+<p>A recurrence relation is a sort of recursively defined function.<br>
+Suppose that the runtime of a program is T(n), then a recurrence relation will express T(n) in terms of its values at other (smaller) values of n.<br>
+Example : T(n) = 2T(n/2) + 3</p>
+</blockquote>
+<h3>Master Theorem</h3>
+<p>It covers many useful cases of recurrence relation of this form</p>
+<blockquote>
+<p>For constant a &gt;= 1, b &gt; 1, T(n) = a T ( n / b  ) + f(n), which means we can spend f(n) time to convert a T(n) problem into seven T(n / b) problems:</p>
+</blockquote>
+<ol>
+<li>if f(n) = O(n ^ c), and c &lt; log b (a), then T(n) should be θ(n ^ (log b (a))).
+<ul>
+<li>for example T(n) = 3T(n / 2) + n =&gt; θ(n ^ (log 2 (3))).</li>
+</ul>
+</li>
+<li>if f(n) = θ(n ^ c * log n ^ k) and k &gt;= 0, c == log b (a), then T(n) should be θ(n^c * log n ^ (k+1)).
+<ul>
+<li>for example merge sort, T(n) = 2T(n / 2) + n =&gt; θ(n * log n).</li>
+</ul>
+</li>
+<li>if f(n) = Ω(n ^ c), and c &gt; log b (a), a * f(n / b) &lt;= k * f(n) for some k &lt; 1, then T(n) should be θ(f(n)).
+<ul>
+<li>for example T(n) = 2T(n / 2) + n^2 =&gt; θ(n^2).</li>
+</ul>
+</li>
+</ol>
+<h3>Recurrence Tree</h3>
+<p>This way is much more intuitive, but need a better understanding of the algorithm.</p>
+<p>Those some are example cases:</p>
+<h4>The most representative example should be merge sort, T(n) = 2 T(n / 2) + n</h4>
+<p><strong>Tried to draw the tree first:</strong></p>
+<pre><code>n
+n/2 n/2
+n/4 n/4 n/4 n/4 
+...
+n leaves with value 1
+</code></pre>
+<ol>
+<li>Now you can consider the problem's time complexity is the time spend to make <code>n leaves</code>back into <code>1 n</code>(i.e. the merge time) and the time to solve those leaves.</li>
+<li>It's obviously the size of the algorithm half once go down a level, so it's easy to find out that the tree's height should be log (n).</li>
+<li>And for each level, we merge all leaves need time complexity O(n), and time to solve those leaves is just O(n), which can be ignored directly.</li>
+<li>So it's not hard to get T(n) = θ(n * log2 (n)).</li>
+</ol>
+<h4>Here is a example which can not use master theorem , T(n) = 2 T (n - 1) + n</h4>
+<pre><code>n
+n-1 n-1
+n-2 n-2 n-2 n-2
+...
+2^n leaves with value 1
+</code></pre>
+<ul>
+<li>Obviously the tree's height should be n, so there are 2^n leaves in the bottom of the tree, which means we just need 2^n to solve those base case.</li>
+<li>But for every level, from the expression we know we need O(n) extra time (maybe used to split or merge), so in total it is O(n + n - 1 + n - 2 + ... + 1), which can be ignore directly.</li>
+<li>So it's not hard to get T(n) = θ(2 ^ n).</li>
+</ul>
+<h2>Prove</h2>
+<p>After we have a estimate, we need to prove it. Usually we will use substitution method, which means we suppose our estimate is correct, then try to prove it.<br>
+At most situations the mathematical induction should help.</p>

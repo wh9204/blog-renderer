@@ -1,0 +1,114 @@
+<h2>What is Docker ?</h2>
+<p>There are a lot of explanations for Docker over the Internet. But in my own point of view, Docker is a <strong>super lightweight</strong> but powerful virtual machine technique with<br>
+a handy usage. You can also regard it as a Parallels Desktop without GUI interface. Before we continue just come to <a href="https://www.docker.com" rel="nofollow">official website</a> to install it.</p>
+<h2>My Idea</h2>
+<h3>Mindset</h3>
+<p>At most situation, people use it to pack a running environment so that they can deploy it in another computer quickly and easily. For example,<br>
+imaging you have a web server for your website, but the machine you develop it differs to the machine you are going to deploy it. So you need to<br>
+install all the dependence and set the running environment for both two computers. This is usually not a entertaining work, this is where Docker comes.<br>
+It seems it's suitable for those big company, and people hardly realize it will also be a powerful tool for personal user (at least for me 3&gt;).</p>
+<h3>My Usage and Its Advantages</h3>
+<ul>
+<li>
+<p>Get almost any usual system running environment  (like Ubuntu, Debian) in several lines of codes.<br>
+You no longer need to download the system image, then painfully install it using several minites and<br>
+face the risk that finnally you got a seems unsolvable problem.</p>
+</li>
+<li>
+<p>Keep you computer's running environment clean, which means you won't get conflict to install a tool which need a library A<br>
+which is somehow conflicted with library B downloaded by another software three days ago. If you have a crazy obsession for a really clean command line running environment just like me, trust me, just install it.</p>
+</li>
+<li>
+<p>Fast than virtual machine but need less computer resources. To explain this idea, you need to have a knowledge about the inner structure difference between docker and traditional virtual machine. Traditional virutalization is by running a target system based on simulated hardware, so every instruction is in fact not execute by our physical machine directly. But what Docker is going to do is that it does not simulating hardware or system, it just provides the necessary libray/dependence which software needed for running, which means the process is in fact directly running on the physical machine. Because of this difference,Docker usually boot quicker and has a higher running effeciency (in fact lower down the hardware requirement for your computer).</p>
+</li>
+</ul>
+<h2>Some Important Concepts and Usages</h2>
+<h3>Concepts</h3>
+<p>First let's we discuss three important concept :</p>
+<ol>
+<li>Image : It provides those necessary software, libraries and configuration for the system and keep it as small and tidy as possible. So you will find all the<br>
+images are small. For example, the ubuntu:16.04 image is only 117MB. It's just a minimum file system. One important feature needed to know is that the image is<br>
+based on layer, which means image is a stack of layers. One a layer is created, it would no longer changed, so that all the change will not on the current layer<br>
+but one more layer on the top with the changed logged.</li>
+<li>Container : Although we could say the container and image is just like instance and class, but in fact container is a running process, but it's special, so it<br>
+got its own file system, network and process space just like an operating system based on the image. When the container is running, the content inside is based on<br>
+the image, but in fact it will made a new layer on the top of it and logged any change on the new layer. Once the container die (not stop), this temporary layer will<br>
+just disappear. So all the information saved inside will just go away as well.</li>
+<li>Repository : You can regard repository as a git hub for images, we can download those common images from <a href="https://hub.docker.com" rel="nofollow">Docker Hub</a> which is the official<br>
+public repository.</li>
+</ol>
+<h3>Usage</h3>
+<p>In the following content I will show you how I fetch a ubuntu:16 and configure it as my daily used develop environment.</p>
+<ol>
+<li><code>docker pull ubuntu:16.04</code>
+<ul>
+<li>fetch an image from Docker Hub since no repository address is specified.</li>
+</ul>
+</li>
+<li><code>docker images</code>
+<ul>
+<li>You will see all the <strong>top layer images</strong>, so what is top layer images ? As I said above, image is just stack of layer, and another important feature is, Docker<br>
+uses Union FS, which means if two images based on the same image, then the based image will on have one copy in your system.</li>
+<li>To see all the images include those intermediate one, use <code>docker images -a</code></li>
+<li>use <code>docker rmi id</code> to delete an image, the only thing you need to know is, if some top image is based on the intermediate image, you won't be allowed to delete<br>
+the intermediate one if you do not delete the top one first.</li>
+</ul>
+</li>
+<li><code>docker run --name base -ti -p 127.0.0.1:22:22 (ID of Ubuntu:16) bash</code>
+<ul>
+<li>use <code>--name base</code> to specify the name of container as <code>base</code>.</li>
+<li>use <code>-ti</code> to specify we need a pseudo-TTY and want to interact with it.</li>
+<li>use <code>-p ip:port:port</code> to bind the <code>ip:port</code> in your physical machine with the rear port number in the virtual machine.</li>
+<li>once you type this command, you will enter Ubuntu directly.</li>
+</ul>
+</li>
+<li>Install necessary tool and do some system configurations.
+<ul>
+<li><code>passwd</code> : change password for your system, will be used as login password for ssh.</li>
+<li><code>dpkg-reconfigure locales</code> : set the locales</li>
+<li><code>apt update</code></li>
+<li><code>apt install vim -y</code></li>
+<li><code>apt install tmux -y</code></li>
+<li><code>apt install openssh-server -y</code> : install ssh server to allow you do ssh remote login.
+<ol>
+<li><code>vim /etc/ssh/sshd_config</code> change the setting column <code>PermitRootLogin no</code> into <code>PermitRootLogin yes</code> : allow you to login in as root.</li>
+<li><code>/etc/init.d/ssh start</code> : start ssh server.</li>
+<li>In your physical terminal use <code>ssh root@127.0.0.1 -p22</code> to login in to your virtual machine.</li>
+</ol>
+</li>
+<li><code>apt install git -y</code></li>
+<li><code>apt install zsh -y</code> : use zsh to substitute bash.
+<ol>
+<li><code>chsh -s /bin/zsh</code> : set zsh as default one.</li>
+<li><code>sh -c "$(wget https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh -O -)"</code> : install zsh plugin.</li>
+<li><code>apt install autojump</code> then go to <code>.zshrc</code> enable it.</li>
+</ol>
+</li>
+<li>Install conda, check my article <a href="https://github.com/nzhl/blog/blob/master/category/python/Using%20Conda%20TO%20Manage%20Running%20Environment%20In%20Python/README.md">Using Conda To Manage Running Environment In Python</a>, may need to <code>apt install bzip2</code> first (dependence).</li>
+<li><code>apt install locales -y</code> then <code>dpkg-reconfigure locales</code> to set the font.</li>
+<li>You may want install your own, just install and delete all the necessary file and clear apt cache <code>rm -rf /var/lib/apt/lists/*</code>.</li>
+<li>Once everything is done, just exit.</li>
+</ul>
+</li>
+<li><code>docker commit container-ID customized:16.04</code> : this makes your container with your software installed pack into a new image with a repository<br>
+name "customized" and the tag "16.04".
+<ul>
+<li>You can use <code>docker ps</code> to check current running container and add flag <code>-a</code> to check all the container.</li>
+<li><code>docker rm base</code> : remove the container we just created.</li>
+<li><code>docker rmi ID</code> :  remove a image with the specified ID.</li>
+</ul>
+</li>
+<li><code>docker run --name Cool -d -p 127.0.0.1:1314:22 -p 127.0.0.1:80:5000 -v ~/docker:/root/docker 12b5bd10f244 /usr/sbin/sshd -D</code>
+<ul>
+<li><code>-d</code> is used to make the container running as a daemon.</li>
+<li><code>-v machine/directory:container/direcory</code> can mount the specific directory on your machine into the system. Here in fact involves a concept<br>
+named Volume, but for the <strong>only learn what need to learn</strong> rule, I decided to ignore it. Just think the file is shared by your<br>
+physical and virtual system.</li>
+<li>Now you can use <code>ssh root@localhost -p1314</code> to login to your virtual machine.</li>
+</ul>
+</li>
+<li>Maybe next time you just mess everything up in this environment, you can use docker run to quickly initialize a new one. Cool !</li>
+</ol>
+<h3>Postscript Note</h3>
+<p>This article only mentioned those most frequently used features by me, in fact a more convenience way to make a container is writing docker file.<br>
+And what you see in my article about Docker is just the tip of the iceberg, to know more powerful usage, I recommend you to read the official document.</p>

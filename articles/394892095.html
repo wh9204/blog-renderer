@@ -1,0 +1,182 @@
+<h3>The concept</h3>
+<p>There are a lot of ways to implement map/dictionary(set of key-value pairs). The simple but inefficient way is array based, But the most frequently used way is <strong>hash table</strong>.</p>
+<ul>
+<li>The basic idea is to convert every key into a index of a fixed interval. [0, container_size)</li>
+<li>The process of converting is called hash, usually it just needs O(1).</li>
+<li>If two different keys are converted into the same value/index, this is collision.</li>
+</ul>
+<p>So the following content will focus on hash function and collision solving.</p>
+<h2>Several common hash functions</h2>
+<ul>
+<li>In fact the type of key can be anything (string, object...), usually we will convert it into a integer value first.</li>
+<li>But in this article we will ignore the above process and only focus on how to convert a large integer into a index that fit the container.</li>
+<li><strong>The key criteria of a hash function is to what extent it can avoid the collision.</strong></li>
+</ul>
+<h3>Division</h3>
+<ol>
+<li>Imagine key == k, and the container size is m.</li>
+<li>Then the hash function is <code>h(k) = k mod m</code>.</li>
+<li>The choosing of m is really important. According to the theory from the book, m should be a prime number that is <strong>away from the power of 2</strong> (eg. 701).</li>
+</ol>
+<h3>Multiplication</h3>
+<ol>
+<li>Imagine key == k, and the container size is m.</li>
+<li>Then the hash function is <code>h(k) = floor(m(kA mod 1))</code>, here A is a decimal in (0, 1).</li>
+<li>And the choosing of A's value should according to the input value, but usually when A is close to <code>(sqrt(5) - 1) / 2</code>(roughly <strong>0.6180339887...</strong>), it works better.</li>
+<li>The advantage of multiplication comparing to division is we can randomly choosing m since it's no longer that important.</li>
+<li>Usually m should be the power of 2, so we can use shift operation to make it more efficient.</li>
+</ol>
+<h3>More</h3>
+<p>There are a lot of efficient hash function suitable for different situation, here I only mentioned two simple ones.</p>
+<h2>Collision Handing</h2>
+<h3>Separate Chaining</h3>
+<ul>
+<li>In this method, let every entry in hash table be a list rather the element we want to store.</li>
+<li>If collision occur, we just insert the new element into the list.</li>
+<li>Of course we may use other more efficient data structure rather list.</li>
+</ul>
+<h3>Open Address</h3>
+<p>In this method every entry should store the element, once collision occur, just traversal the container to find the next free position <strong>in some rule</strong>.<br>
+If the container is full, then insert failed. But what should those rules be ? Here are three common rules :</p>
+<ol>
+<li>liner probing :
+<ul>
+<li>Imagine the hash value calculated is k, and the container size is m. Then we choose a constant c (maybe 1, 2, 3...)</li>
+<li>The order to be checked is {k, k + c, k + 2c,...} mod m.</li>
+<li>This is simple, but it will cause the collision element lump together.</li>
+</ul>
+</li>
+<li>square probing :
+<ul>
+<li>Imagine the hash value calculated is k, and the container size is m. Then we choose a constant c1, c2.</li>
+<li>The order to be checked is {k, k + c1 + c2, k + c1 * 2 + c2 * 2^2, k + c1 * 3 + c2 * 3^4} mod m.</li>
+<li>Better than liner probing in practice, but need to choose a suitable c1 and c2 to make full use of the map.</li>
+</ul>
+</li>
+<li>double hash :
+<ul>
+<li>It uses a secondary hash table to handle the collision.</li>
+<li>Imagine the two hash value calculated from the two hash function is k1 and k2, and the container size is m.</li>
+<li>The order to be checked is {k1, k1 + k2, k1 + 2 * k2, k1 + 3 * k2, ...} mod m.</li>
+<li>Must make sure k2 can not be 0, and the container size m must be a prime to make sure all position can be probed.</li>
+</ul>
+</li>
+</ol>
+<h4>Remove element for open address</h4>
+<p>You can not directly set the value at the specific position into NULL, because there may be some elements with the same hash value stored behind because of the collision.<br>
+Otherwise that element won't be find after this delete operation (once the find function function NULL, it will return directly). The best way should be use a deleted flag,<br>
+and in the find function, if flag is found just ignore it and continue find.</p>
+<h3>The performance of hashing</h3>
+<ul>
+<li>Usually it's O(1) for both insert, remove and find, but in the worst case it is O(n).</li>
+<li>The worst case occur when all the elements are inserted into collision.</li>
+<li>Except choose a better hash function and collision handing strategy, rehash the container regularly is also important.
+<ul>
+<li>We use load factor ( number of elements stored / container size ) to present how full the map is.</li>
+<li>In Java, once load factor matches 75%, rehash will happen.</li>
+</ul>
+</li>
+<li>Rehash usually means create a bigger container and move all the element into it. Usually it's not done in one go but a few at a time.</li>
+</ul>
+<h3>An simple implementation</h3>
+<div class="highlight highlight-source-c++"><pre>#<span class="pl-k">ifndef</span> CPP_HASHMAP_H
+#<span class="pl-k">define</span> <span class="pl-en">CPP_HASHMAP_H</span>
+
+#<span class="pl-k">include</span> <span class="pl-s"><span class="pl-pds">&lt;</span>array<span class="pl-pds">&gt;</span></span>
+#<span class="pl-k">include</span> <span class="pl-s"><span class="pl-pds">&lt;</span>string<span class="pl-pds">&gt;</span></span>
+#<span class="pl-k">include</span> <span class="pl-s"><span class="pl-pds">&lt;</span>vector<span class="pl-pds">&gt;</span></span>
+#<span class="pl-k">include</span> <span class="pl-s"><span class="pl-pds">&lt;</span>iostream<span class="pl-pds">&gt;</span></span>
+#<span class="pl-k">include</span> <span class="pl-s"><span class="pl-pds">&lt;</span>cmath<span class="pl-pds">&gt;</span></span>
+
+<span class="pl-k">enum</span> WAY_TO_CONVERT{
+    DIVISION,
+        ADDITION
+
+};
+
+<span class="pl-c"><span class="pl-c">/*</span></span>
+<span class="pl-c"> * 1. the key must be string</span>
+<span class="pl-c"> * 2. use chain to solve collision</span>
+<span class="pl-c"> <span class="pl-c">*/</span></span>
+<span class="pl-k">template </span>&lt;<span class="pl-k">typename</span> VALUE, WAY_TO_CONVERT CONVERT&gt;
+<span class="pl-k">class</span> <span class="pl-en">HashMap</span> {
+    <span class="pl-k">struct</span> <span class="pl-en">Element</span>{
+        std::string key;
+        VALUE value;
+
+    };
+
+    <span class="pl-k">const</span> <span class="pl-k">static</span> <span class="pl-k">int</span> ASCII_SIZE = <span class="pl-c1">128</span>;
+    <span class="pl-k">const</span> <span class="pl-k">static</span> <span class="pl-k">int</span> SIZE = <span class="pl-c1">701</span>;
+    <span class="pl-k">constexpr</span> <span class="pl-k">const</span> <span class="pl-k">static</span> <span class="pl-k">double</span> A = <span class="pl-c1">0.6180339887</span>;
+    std::array&lt;std::vector&lt;Element&gt;, SIZE&gt; map;
+
+    <span class="pl-c1">size_t</span> <span class="pl-en">keyToIndex</span>(std::string key){
+        <span class="pl-c"><span class="pl-c">/*</span>*</span>
+<span class="pl-c">         * 1. string -&gt; digit</span>
+<span class="pl-c">         * 2. digit  -&gt; index</span>
+<span class="pl-c">         <span class="pl-c">*/</span></span>
+        <span class="pl-c1">size_t</span> sum = <span class="pl-c1">0</span>;
+        <span class="pl-k">for</span>(<span class="pl-k">auto</span> each : key){
+            sum += each * ASCII_SIZE;
+
+        }
+        <span class="pl-k">if</span>(CONVERT == DIVISION){
+            <span class="pl-k">return</span> sum % SIZE;
+
+        } <span class="pl-k">else</span>{
+            <span class="pl-k">return</span> <span class="pl-c1">std::floor</span>((sum * A - <span class="pl-c1">std::floor</span>(sum * A)) * SIZE);
+
+        }
+
+    }
+    <span class="pl-k">public:</span>
+    <span class="pl-en">HashMap</span>(){  }
+    <span class="pl-en">HashMap</span>(<span class="pl-k">const</span> HashMap&amp;) = <span class="pl-k">delete</span>;
+    HashMap <span class="pl-k">operator</span>=(<span class="pl-k">const</span> HashMap&amp;) = <span class="pl-k">delete</span>;
+
+
+    VALUE <span class="pl-en">search</span>(<span class="pl-k">const</span> std::string key){
+        <span class="pl-c1">size_t</span> <span class="pl-c1">index</span> = <span class="pl-c1">keyToIndex</span>(key);
+        <span class="pl-k">if</span>(map[<span class="pl-c1">index</span>].<span class="pl-c1">size</span>() != <span class="pl-c1">0</span>){
+            <span class="pl-k">if</span>(map[<span class="pl-c1">index</span>].<span class="pl-c1">size</span>() == <span class="pl-c1">1</span>){
+                <span class="pl-k">return</span> map[<span class="pl-c1">index</span>][<span class="pl-c1">0</span>].<span class="pl-smi">value</span>;
+
+            } <span class="pl-k">else</span>{
+                <span class="pl-k">for</span>(<span class="pl-k">auto</span> <span class="pl-k">const</span>&amp; element: map[<span class="pl-c1">index</span>]){
+                    <span class="pl-k">if</span>(element.<span class="pl-smi">key</span> == key){
+                        <span class="pl-k">return</span> element.<span class="pl-smi">value</span>;
+
+                    }
+
+                }
+
+            }
+
+        }
+        <span class="pl-k">return</span> <span class="pl-c1">0</span>;
+
+    }
+
+
+    <span class="pl-k">void</span> <span class="pl-en">insert</span>(<span class="pl-k">const</span> std::string key, <span class="pl-k">const</span> VALUE value){
+        <span class="pl-k">if</span>(<span class="pl-c1">search</span>(key) == <span class="pl-c1">0</span>) {
+            <span class="pl-c1">size_t</span> <span class="pl-c1">index</span> = <span class="pl-c1">keyToIndex</span>(key);
+            Element element;
+            element.<span class="pl-smi">key</span> = key;
+            element.<span class="pl-smi">value</span> = value;
+
+            map[<span class="pl-c1">index</span>].<span class="pl-c1">push_back</span>(element);
+
+        }
+
+    }
+
+    <span class="pl-k">void</span> <span class="pl-en">deleteElement</span>(VALUE value){
+        <span class="pl-c"><span class="pl-c">//</span>TODO</span>
+
+    }
+
+};
+
+#<span class="pl-k">endif</span> <span class="pl-c"><span class="pl-c">//</span>CPP_HASHMAP_H</span></pre></div>

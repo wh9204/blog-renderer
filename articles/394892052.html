@@ -1,0 +1,336 @@
+<div class="highlight highlight-source-c"><pre><span class="pl-k">typedef</span> <span class="pl-k">struct</span> Singly_Node{
+    <span class="pl-k">struct</span> Singly_Node *next;
+    <span class="pl-k">void</span> *elem;
+}Singly_Node;
+
+<span class="pl-k">typedef</span> <span class="pl-k">struct</span> Singly_List{
+    Singly_Node *head;
+}Singly_List;
+
+<span class="pl-k">typedef</span> <span class="pl-k">struct</span> Doubly_Node{
+    <span class="pl-k">struct</span> Doubly_Node *next;
+    <span class="pl-k">struct</span> Doubly_Node *prev;
+    <span class="pl-k">void</span> *elem;
+}Doubly_Node;
+
+<span class="pl-k">typedef</span> <span class="pl-k">struct</span> Doubly_List{
+    Doubly_Node *head;
+}Doubly_List;
+
+
+<span class="pl-k">void</span> <span class="pl-en">bubble_sort</span>(<span class="pl-k">int</span> *array, <span class="pl-k">int</span> len);
+<span class="pl-k">void</span> <span class="pl-en">bubble_sort_list</span>(Singly_List *list);
+
+<span class="pl-k">void</span> <span class="pl-en">selection_sort</span>(<span class="pl-k">int</span> *array, <span class="pl-k">int</span> len);
+<span class="pl-k">void</span> <span class="pl-en">selection_sort_list</span>(Singly_List *list);
+
+<span class="pl-k">void</span> <span class="pl-en">insertion_sort</span>(<span class="pl-k">int</span> *array, <span class="pl-k">int</span> len);
+<span class="pl-k">void</span> <span class="pl-en">insertion_sort_list</span>(Doubly_List *list);
+
+<span class="pl-k">void</span> <span class="pl-en">merge_sort</span>(<span class="pl-k">int</span> *array, <span class="pl-k">int</span> len);
+
+<span class="pl-k">void</span> <span class="pl-en">heap_sort</span>(<span class="pl-k">int</span> *array, <span class="pl-k">int</span> len);
+
+<span class="pl-k">void</span> <span class="pl-en">quick_sort</span>(<span class="pl-k">int</span> *array, <span class="pl-k">int</span> len);</pre></div>
+<div class="highlight highlight-source-c"><pre>#<span class="pl-k">include</span> <span class="pl-s"><span class="pl-pds">&lt;</span>stdio.h<span class="pl-pds">&gt;</span></span>
+#<span class="pl-k">include</span> <span class="pl-s"><span class="pl-pds">&lt;</span>stdlib.h<span class="pl-pds">&gt;</span></span>
+
+#<span class="pl-k">include</span> <span class="pl-s"><span class="pl-pds">"</span>sorts.h<span class="pl-pds">"</span></span>
+
+<span class="pl-k">static</span> <span class="pl-k">void</span> <span class="pl-en">swap</span>(<span class="pl-k">int</span> *array, <span class="pl-k">int</span> i, <span class="pl-k">int</span> j){
+    <span class="pl-k">int</span> temp = array[i];
+    array[i] = array[j];
+    array[j] = temp;
+}
+
+<span class="pl-k">static</span> <span class="pl-k">void</span> <span class="pl-en">swap_node</span>(Singly_Node *node1, Singly_Node *node2){
+    <span class="pl-k">void</span> *temp = node1-&gt;<span class="pl-smi">elem</span>;
+    node1-&gt;<span class="pl-smi">elem</span> = node2-&gt;<span class="pl-smi">elem</span>;
+    node2-&gt;<span class="pl-smi">elem</span> = temp;
+}
+
+
+<span class="pl-c"><span class="pl-c">/*</span></span>
+<span class="pl-c"> *  1. Stable sort</span>
+<span class="pl-c"> *  2. May get a lot of comparisons and **swaps**.</span>
+<span class="pl-c"> *  3. Can easily be used on a single linked list.</span>
+<span class="pl-c"> *  4. Time Complexity : O(n^2)</span>
+<span class="pl-c"> <span class="pl-c">*/</span></span>
+<span class="pl-k">void</span> <span class="pl-en">bubble_sort</span>(<span class="pl-k">int</span> *array, <span class="pl-k">int</span> len){
+    <span class="pl-k">for</span>(<span class="pl-k">int</span> i = len-<span class="pl-c1">1</span>; i &gt; <span class="pl-c1">0</span>; --i){
+        <span class="pl-k">for</span>(<span class="pl-k">int</span> j = <span class="pl-c1">0</span>; j &lt; i; ++j){
+            <span class="pl-k">if</span>(array[j] &gt; array[j+<span class="pl-c1">1</span>]){
+                <span class="pl-c1">swap</span>(array, j, j+<span class="pl-c1">1</span>);
+            }
+        }
+    }
+}
+
+<span class="pl-k">void</span> <span class="pl-en">bubble_sort_list</span>(Singly_List *list){
+    Singly_Node *guard = <span class="pl-c1">NULL</span>;
+    <span class="pl-k">while</span>(list-&gt;<span class="pl-smi">head</span> != guard){
+        Singly_Node *cur = list-&gt;<span class="pl-smi">head</span>;
+        <span class="pl-k">while</span>(cur-&gt;<span class="pl-smi">next</span> != guard){
+            <span class="pl-k">if</span>(*(<span class="pl-k">int</span> *)(cur-&gt;<span class="pl-smi">elem</span>) &gt; *(<span class="pl-k">int</span> *)(cur-&gt;<span class="pl-smi">next</span>-&gt;<span class="pl-smi">elem</span>)){
+                <span class="pl-c1">swap_node</span>(cur, cur-&gt;<span class="pl-smi">next</span>);
+            }
+            cur = cur-&gt;<span class="pl-smi">next</span>;
+        }
+        guard = cur;
+    }
+}
+
+<span class="pl-c"><span class="pl-c">/*</span></span>
+<span class="pl-c"> *  1. Stable sort</span>
+<span class="pl-c"> *  2. May get a lot of comparisons.</span>
+<span class="pl-c"> *  3. Fewer swaps, at most (len - 1) times.</span>
+<span class="pl-c"> *  4. Can easily be used on a singly linked list.</span>
+<span class="pl-c"> <span class="pl-c">*/</span></span>
+<span class="pl-k">void</span> <span class="pl-en">selection_sort</span>(<span class="pl-k">int</span> *array, <span class="pl-k">int</span> len){
+    <span class="pl-k">for</span>(<span class="pl-k">int</span> i = len-<span class="pl-c1">1</span>; i &gt; <span class="pl-c1">0</span>; --i){
+        <span class="pl-k">int</span> greatest_index = <span class="pl-c1">0</span>;
+        <span class="pl-k">for</span>(<span class="pl-k">int</span> j = <span class="pl-c1">0</span>; j &lt;= i; ++j){
+            <span class="pl-k">if</span>(array[j] &gt; array[greatest_index]){
+                greatest_index = j;
+            }
+        }
+        <span class="pl-k">if</span>(i != greatest_index){
+            <span class="pl-c1">swap</span>(array, i, greatest_index);
+        }
+    }
+}
+
+<span class="pl-k">void</span> <span class="pl-en">selection_sort_list</span>(Singly_List *list){
+    Singly_Node *guard = <span class="pl-c1">NULL</span>;
+    <span class="pl-k">while</span>(list-&gt;<span class="pl-smi">head</span> != guard){
+        Singly_Node *max = list-&gt;<span class="pl-smi">head</span>;
+        Singly_Node *cur = list-&gt;<span class="pl-smi">head</span>;
+        <span class="pl-k">while</span>(<span class="pl-c1">1</span>){
+            <span class="pl-k">if</span>(*(<span class="pl-k">int</span> *)(cur-&gt;<span class="pl-smi">elem</span>) &gt; *(<span class="pl-k">int</span> *)(max-&gt;<span class="pl-smi">elem</span>)){
+                max = cur;
+            }
+            <span class="pl-k">if</span>(cur-&gt;<span class="pl-smi">next</span> == guard){
+                guard = cur;
+                <span class="pl-k">if</span>(guard != max){
+                    <span class="pl-c1">swap_node</span>(guard, max);
+                }
+                <span class="pl-k">break</span>;
+            }
+            cur = cur-&gt;<span class="pl-smi">next</span>;
+        }
+    }
+}
+
+<span class="pl-c"><span class="pl-c">/*</span></span>
+<span class="pl-c"> *  1. Stable sort</span>
+<span class="pl-c"> *  2. Better for those input which is already sorted or almost sorted.</span>
+<span class="pl-c"> *  3. Best case can have O(n) time complexity and with a O(n^2) as worst.</span>
+<span class="pl-c"> *  4. Can easily be used on a **doubly linked** list. In fact can also</span>
+<span class="pl-c"> *     be used in a **singly linked** one, but only from head to guard</span>
+<span class="pl-c"> *     can be implemented in inner loop since can not find the previous node.</span>
+<span class="pl-c"> <span class="pl-c">*/</span></span>
+<span class="pl-k">void</span> <span class="pl-en">insertion_sort</span>(<span class="pl-k">int</span> *array, <span class="pl-k">int</span> len){
+    <span class="pl-k">for</span>(<span class="pl-k">int</span> i = <span class="pl-c1">1</span>; i &lt; len; ++i){
+        <span class="pl-k">int</span> temp = array[i];
+        <span class="pl-k">int</span> j = i - <span class="pl-c1">1</span>;
+        <span class="pl-k">while</span> (j != -<span class="pl-c1">1</span> &amp;&amp; temp &lt; array[j]) {
+            array[j+<span class="pl-c1">1</span>] = array[j];
+            --j;
+        }
+        array[j+<span class="pl-c1">1</span>] = temp;
+    }
+}
+
+<span class="pl-k">void</span> <span class="pl-en">insertion_sort_list</span>(Doubly_List *list){
+    Doubly_Node *guard = list-&gt;<span class="pl-smi">head</span>;
+    <span class="pl-k">while</span>(guard-&gt;<span class="pl-smi">next</span> != <span class="pl-c1">NULL</span>){
+        Doubly_Node *to_insert = guard-&gt;<span class="pl-smi">next</span>;
+        <span class="pl-k">if</span>(*(<span class="pl-k">int</span> *)(to_insert-&gt;<span class="pl-smi">elem</span>) &gt;= *(<span class="pl-k">int</span> *)(guard-&gt;<span class="pl-smi">elem</span>)){
+            guard = guard-&gt;<span class="pl-smi">next</span>;
+            <span class="pl-k">continue</span>;
+        }
+
+        <span class="pl-c"><span class="pl-c">//</span> delete this node first</span>
+        to_insert-&gt;<span class="pl-smi">prev</span>-&gt;<span class="pl-smi">next</span> = to_insert-&gt;<span class="pl-smi">next</span>;
+
+        <span class="pl-c"><span class="pl-c">//</span> need consider the tail node</span>
+        <span class="pl-k">if</span>(to_insert-&gt;<span class="pl-smi">next</span>){
+            to_insert-&gt;<span class="pl-smi">next</span>-&gt;<span class="pl-smi">prev</span> = to_insert-&gt;<span class="pl-smi">prev</span>;
+        }
+
+
+        <span class="pl-c"><span class="pl-c">//</span> from head to guard</span>
+        Doubly_Node *cur = list-&gt;<span class="pl-smi">head</span>;
+        <span class="pl-k">while</span>(cur != guard-&gt;<span class="pl-smi">next</span> &amp;&amp; *(<span class="pl-k">int</span> *)(to_insert-&gt;<span class="pl-smi">elem</span>) &gt;= *(<span class="pl-k">int</span> *)(cur-&gt;<span class="pl-smi">elem</span>)){
+            cur = cur-&gt;<span class="pl-smi">next</span>;
+        }
+
+        to_insert-&gt;<span class="pl-smi">next</span> = cur;
+        to_insert-&gt;<span class="pl-smi">prev</span> = cur-&gt;<span class="pl-smi">prev</span>;
+        cur-&gt;<span class="pl-smi">prev</span> = to_insert;
+        <span class="pl-k">if</span>(cur-&gt;<span class="pl-smi">prev</span> != <span class="pl-c1">NULL</span>){
+            cur-&gt;<span class="pl-smi">prev</span>-&gt;<span class="pl-smi">next</span> = to_insert;
+        }
+        <span class="pl-c"><span class="pl-c">//</span> head</span>
+        <span class="pl-k">else</span>{
+            list-&gt;<span class="pl-smi">head</span> = to_insert;
+        }
+    guard = guard-&gt;<span class="pl-smi">next</span>;
+    }
+}
+
+<span class="pl-k">static</span> <span class="pl-k">void</span> <span class="pl-en">do_merge_sort</span>(<span class="pl-k">int</span> *array, <span class="pl-k">int</span> head, <span class="pl-k">int</span> guard){
+    <span class="pl-c"><span class="pl-c">//</span> no more than 1 elem</span>
+    <span class="pl-k">if</span>(guard - head &lt;= <span class="pl-c1">1</span>){
+        <span class="pl-k">return</span>;
+    }
+
+    <span class="pl-c"><span class="pl-c">//</span>divide</span>
+    <span class="pl-k">int</span> mid = (head + guard) / <span class="pl-c1">2</span>;
+    <span class="pl-c1">do_merge_sort</span>(array, head, mid);
+    <span class="pl-c1">do_merge_sort</span>(array, mid, guard);
+
+    <span class="pl-c"><span class="pl-c">//</span>merge</span>
+    <span class="pl-k">int</span> temp[guard - head];
+    <span class="pl-k">int</span> left_index = head;
+    <span class="pl-k">int</span> right_index = mid;
+    <span class="pl-k">int</span> temp_index = <span class="pl-c1">0</span>;
+
+    <span class="pl-k">while</span>(left_index != mid &amp;&amp; right_index != guard){
+        <span class="pl-k">if</span>(array[left_index] &lt;= array[right_index]){
+            temp[temp_index++] = array[left_index++];
+        }
+        <span class="pl-k">else</span>{
+            temp[temp_index++] = array[right_index++];
+        }
+    }
+
+    <span class="pl-k">while</span>(left_index != mid){
+        temp[temp_index++] = array[left_index++];
+    }
+
+    <span class="pl-k">while</span>(right_index != guard){
+        temp[temp_index++] = array[right_index++];
+    }
+
+    <span class="pl-c"><span class="pl-c">//</span> copy back</span>
+    <span class="pl-k">int</span> i = <span class="pl-c1">0</span>;
+    <span class="pl-k">while</span>(i != temp_index){
+        array[i + head] = temp[i];
+        ++i;
+    }
+}
+
+<span class="pl-c"><span class="pl-c">/*</span></span>
+<span class="pl-c"> *  1. Stable sort</span>
+<span class="pl-c"> *  2. Not like the those sorts above, it's not a in-place sort.</span>
+<span class="pl-c"> *     It needs extra space while running, and the space complexity is O(n).</span>
+<span class="pl-c"> *  3. No best case or worst case, always O(nlogn) as its time complexity,</span>
+<span class="pl-c"> *     Since it needs extra allocating space, should not consider it if the</span>
+<span class="pl-c"> *     input size is small. And in practice it is slower than the quick sort</span>
+<span class="pl-c"> *     while the input scale is really big.</span>
+<span class="pl-c"> *  4. Not so good with list, since in array we only need constant time to</span>
+<span class="pl-c"> *     divide the array, but for list, we need O(n) time.</span>
+<span class="pl-c"> <span class="pl-c">*/</span></span>
+<span class="pl-k">void</span> <span class="pl-en">merge_sort</span>(<span class="pl-k">int</span> *array, <span class="pl-k">int</span> len){
+    <span class="pl-c1">do_merge_sort</span>(array, <span class="pl-c1">0</span>, len);
+}
+
+<span class="pl-k">static</span> <span class="pl-k">void</span> <span class="pl-en">down_heap</span>(<span class="pl-k">int</span> *array, <span class="pl-k">int</span> cur, <span class="pl-k">int</span> guard){
+    <span class="pl-k">int</span> max = cur;
+    <span class="pl-k">int</span> left = cur &lt;&lt; <span class="pl-c1">1</span>;
+    <span class="pl-k">int</span> right = left + <span class="pl-c1">1</span>;
+    <span class="pl-k">if</span>(left &lt; guard &amp;&amp; array[max] &lt; array[left]){
+        max = left;
+    }
+    <span class="pl-k">if</span>(right &lt; guard &amp;&amp; array[max] &lt; array[right]){
+        max = right;
+    }
+    <span class="pl-k">if</span>(max != cur){
+        <span class="pl-c1">swap</span>(array, max, cur);
+        <span class="pl-c1">down_heap</span>(array, max, guard);
+    }
+}
+
+<span class="pl-k">static</span> <span class="pl-k">void</span> <span class="pl-en">build_heap</span>(<span class="pl-k">int</span> *array, <span class="pl-k">int</span> guard){
+    <span class="pl-k">int</span> cur = (guard-<span class="pl-c1">1</span>) / <span class="pl-c1">2</span>;
+    <span class="pl-k">while</span>(cur){
+        <span class="pl-c1">down_heap</span>(array, cur--, guard);
+    }
+}
+
+<span class="pl-c"><span class="pl-c">/*</span></span>
+<span class="pl-c"> *  1. Not stable but in-place.</span>
+<span class="pl-c"> *  2. The best, worst and average case both are O(nlogn).</span>
+<span class="pl-c"> *  3. It tends to compare/swap two elements which are not that</span>
+<span class="pl-c"> *     sequential, so may increase the page fault rate of the system.</span>
+<span class="pl-c"> <span class="pl-c">*/</span></span>
+<span class="pl-k">void</span> <span class="pl-en">heap_sort</span>(<span class="pl-k">int</span> *array, <span class="pl-k">int</span> guard){
+    <span class="pl-c"><span class="pl-c">//</span> Array implementation heap, so array[0] is ignored.</span>
+    <span class="pl-c"><span class="pl-c">//</span> So the actual array length is guard - 1.</span>
+    <span class="pl-c"><span class="pl-c">//</span> First we need to build a max heap in [1, guard-1].</span>
+    <span class="pl-c"><span class="pl-c">//</span> Not the same as priority queue, which builds a min heap.</span>
+    <span class="pl-c1">build_heap</span>(array, guard);
+
+    <span class="pl-c"><span class="pl-c">//</span> `guard == 2` means only 1 element in the tree</span>
+    <span class="pl-c"><span class="pl-c">//</span> Then need no to sort at all.</span>
+    <span class="pl-k">while</span>(guard &gt; <span class="pl-c1">2</span>){
+        <span class="pl-c1">swap</span>(array, <span class="pl-c1">1</span>, --guard);
+        <span class="pl-c1">down_heap</span>(array, <span class="pl-c1">1</span>, guard);
+    }
+}
+
+<span class="pl-k">static</span> <span class="pl-k">int</span> <span class="pl-en">find_pivot_index</span>(<span class="pl-k">int</span> head, <span class="pl-k">int</span> tail){
+    <span class="pl-k">return</span> <span class="pl-c1">rand</span>() % (tail - head + <span class="pl-c1">1</span>) + head;
+}
+
+<span class="pl-k">static</span> <span class="pl-k">void</span> <span class="pl-en">do_quick_sort</span>(<span class="pl-k">int</span> *array, <span class="pl-k">int</span> head, <span class="pl-k">int</span> tail){
+    <span class="pl-k">if</span>(tail - head &lt;= <span class="pl-c1">0</span>){
+        <span class="pl-k">return</span>;
+    }
+
+    <span class="pl-k">int</span> pivot = array[<span class="pl-c1">find_pivot_index</span>(head, tail)];
+    <span class="pl-k">int</span> left = head;
+    <span class="pl-k">int</span> right = tail;
+    <span class="pl-k">while</span>(left != right){
+        <span class="pl-k">while</span>(left != right &amp;&amp; array[right] &gt;= pivot) right--;
+        <span class="pl-k">while</span>(left != right &amp;&amp; array[left] &lt; pivot) left++;
+        <span class="pl-k">if</span>(left != right){
+            <span class="pl-c1">swap</span>(array, left, right);
+        }
+    }
+
+    <span class="pl-k">int</span> mid;
+    <span class="pl-c"><span class="pl-c">//</span> now left == right, but not sure array[left]</span>
+    <span class="pl-c"><span class="pl-c">//</span> should belongs to left part or right part.</span>
+    <span class="pl-k">if</span>(array[left] &gt;= pivot){
+        mid = left - <span class="pl-c1">1</span>;
+    } <span class="pl-k">else</span>{
+        mid = left;
+    }
+    <span class="pl-c1">do_quick_sort</span>(array, head, mid);
+    <span class="pl-c1">do_quick_sort</span>(array, mid + <span class="pl-c1">1</span>, tail);
+}
+
+<span class="pl-c"><span class="pl-c">/*</span></span>
+<span class="pl-c"> *  1. Not stable sort but in-place sort.</span>
+<span class="pl-c"> *  2. Worst case would be each time pivot is the maximum or minimum, so</span>
+<span class="pl-c"> *     we use O(n) to split a question with size n into two sub-question</span>
+<span class="pl-c"> *     with size 1 and n-1, in this case we time complexity is O(n^2).</span>
+<span class="pl-c"> *  3. Best case would be each time half the original array, then the time</span>
+<span class="pl-c"> *     complexity would be O(nlogn). However, from practice, the average</span>
+<span class="pl-c"> *     time complexity is also O(nlogn) and we can randomly choose pivot</span>
+<span class="pl-c"> *     to make the worst case hardly occur.</span>
+<span class="pl-c"> *  4. Usually quick than merge sort, that's why it's called quick sort.</span>
+<span class="pl-c"> <span class="pl-c">*/</span></span>
+<span class="pl-k">void</span> <span class="pl-en">quick_sort</span>(<span class="pl-k">int</span> *array, <span class="pl-k">int</span> len){
+    <span class="pl-c1">do_quick_sort</span>(array, <span class="pl-c1">0</span>, len-<span class="pl-c1">1</span>);
+}
+
+<span class="pl-k">int</span> <span class="pl-en">main</span>(<span class="pl-k">int</span> argc, <span class="pl-k">char</span>* argv[]){
+    <span class="pl-k">int</span> x[] = {<span class="pl-c1">0</span>, <span class="pl-c1">8</span>, <span class="pl-c1">7</span>, <span class="pl-c1">10</span>, <span class="pl-c1">4</span>, <span class="pl-c1">5</span>, <span class="pl-c1">6</span>, <span class="pl-c1">9</span>};
+    <span class="pl-c1">heap_sort</span>(x, <span class="pl-c1">8</span>);
+    <span class="pl-k">for</span>(<span class="pl-k">int</span> i = <span class="pl-c1">0</span>; i &lt; <span class="pl-c1">8</span>; ++i){
+        <span class="pl-c1">printf</span>(<span class="pl-s"><span class="pl-pds">"</span><span class="pl-c1">%d</span><span class="pl-cce">\n</span><span class="pl-pds">"</span></span>, x[i]);
+    }
+}</pre></div>

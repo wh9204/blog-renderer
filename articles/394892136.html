@@ -1,0 +1,204 @@
+<p>C++也算是有个把月了, 最近复习了一下C++中的类内各种合成函数, 这里做个总结. 既是帮助别人的同时也是帮助我自己, 便于日后复习, 如果有任何错误欢迎提出.</p>
+<h3>各种类内合成函数</h3>
+<p>编译器在某些条件下会帮忙合成如下几个函数, 分别是默认构造函数, 拷贝构造函数,移动构造函数, 拷贝赋值运算符, 移动赋值运算符和析构函数.</p>
+<h4>合成的默认构造函数 :</h4>
+<p>1 . 它对于类内的成员变量是这样处理的 :</p>
+<ul>
+<li>对于基础类型, 比如<code>char</code>, <code>int</code>, 还有C语言数组例如<code>int [10]</code>之流, 结果是未定义的, 原因是为了兼容C语言.</li>
+<li>对于类类型, 调用其默认构造函数进行初始化.(当然, 如果类内的某个成员类不存在默认构造函数的话, 编译器不会为该类合成默认构造函数.)</li>
+</ul>
+<p>2 . 另一方面, <strong>一旦用户手动实现了任何一个构造函数, 记住是任何一个, 那么编译器是不会主动再合成默认构造函数的</strong>, 当然你可以使用 <code>T() = default;</code> 来显式地告诉编译器为你合成默认构造函数.</p>
+<p>如下几种情况合成的默认构造函数可能是删除的 :</p>
+<ol>
+<li>如果类内某个成员的默认构造函数是私有的或者删除的.</li>
+<li>如果类内含义const成员, 且该成员没有默认值.</li>
+<li>如果类内含有引用成员.</li>
+<li>如果类内某个成员的析构函数是私有的或者删除的.</li>
+</ol>
+<h4>合成的拷贝构造函数 :</h4>
+<p>1 . 它对于类内的成员变量是这样处理的 :</p>
+<ul>
+<li>对于基础类型, 它使用直接拷贝的方式. 所以如果你的类中有指针指向了手动分配的资源, 那么你就要注意了, <strong>因为一旦进行拷贝, 那么改份资源将被这两个类共享</strong>.</li>
+<li>对于类类型, 它调用其相应的拷贝构造函数.</li>
+</ul>
+<p>2 . 另外一方面, <strong>只要用户不手动实现拷贝构造函数, 编译器都会自动合成一个拷贝构造函数, 这一点和默认构造函数不一样.</strong></p>
+<p>如下几种情况合成的拷贝构造函数可能是删除的 :</p>
+<ol>
+<li>如果类内某个成员的拷贝构造函数是私有的或者删除的.</li>
+<li>如果类内某个成员的析构函数是私有的或者删除的.</li>
+<li>手动定义了移动操作(构造和运算符都行)</li>
+</ol>
+<h4>合成的拷贝赋值运算符 :</h4>
+<p>它的行为和合成的拷贝构造函数基本相同, 并且同样也是只要不手动实现就会被自动合成.</p>
+<p>如下几种情况合成的拷贝复制运算符可能是删除的 :</p>
+<ol>
+<li>如果类内某个成员的拷贝赋值运算符是私有的或者删除的.</li>
+<li>如果类内含义const成员.</li>
+<li>如果类内含有引用成员.</li>
+<li>手动定义了移动操作(构造和运算符都行)</li>
+</ol>
+<h4>合成的析构函数 :</h4>
+<ol>
+<li>合成析构函数一般为空.</li>
+<li>对象的销毁在析构函数的函数体之后执行.</li>
+<li>当类中某个成员的析构函数是删除的或者私有的, 则该析构函数是删除的.</li>
+</ol>
+<h4>合成的移动操作</h4>
+<p>1 . 它对于类内的成员变量是这样处理的 :</p>
+<ul>
+<li>对于基础类型, 它使用直接拷贝的方式. 所以如果你的类中有指针指向了手动分配的资源, 那么该份资源直接被移动到目标对象, 源对象中指针指向0.</li>
+<li>对于类类型, 调用相应的移动操作.</li>
+</ul>
+<p>如下几种情况编译器<strong>会为</strong>类生产移动构造函数的, 此时所有可能使用移动操作的情形用拷贝操作替代 :</p>
+<ol>
+<li>一个类没有定义任何自己版本的拷贝构造函数, 拷贝赋值运算符或者析构函数.</li>
+<li>类中有任何一个非static的数据成员都能移动.</li>
+</ol>
+<p>2 . 另一方面, <strong>移动操作永远不会被隐式定义为删除的函数</strong>, 除非我们显式要求编译器生成(<code>=defaulat</code>), 但类中却存在着不能移动的非static成员时, 移动操作将被定义为delete.</p>
+<p>如下几种情况会导致类无法移动所有非static成员 :</p>
+<ol>
+<li>类中某个成员定义了自己的拷贝操作, 且未定义移动操作(此时移动操作并不会自动合成).</li>
+<li>类中某个成员不存在移动操作是删除的或者私有的.</li>
+<li>析构函数是删除的或者私有的(此时仅仅移动构造函数不能用)</li>
+<li>类中存在const或者引用的成员</li>
+</ol>
+<h2>这些函数的调用时机</h2>
+<h3>默认构造函数</h3>
+<ol>
+<li>显式构造</li>
+</ol>
+<div class="highlight highlight-source-c++"><pre>T x; <span class="pl-c"><span class="pl-c">//</span> default constructor</span>
+T <span class="pl-en">x</span>(); <span class="pl-c"><span class="pl-c">//</span> error, it's function declaration.</span>
+T x{}; <span class="pl-c"><span class="pl-c">//</span> default constructor</span></pre></div>
+<ol start="2">
+<li>另外在类中作为成员的时候, 如果构造函数中并没有涉及到该成员, 则也将执行默认构造函数.</li>
+</ol>
+<h3>拷贝构造函数</h3>
+<ol>
+<li></li>
+</ol>
+<div class="highlight highlight-source-c++"><pre>T y;
+T <span class="pl-en">x</span>(y) ;</pre></div>
+<ol start="2">
+<li></li>
+</ol>
+<div class="highlight highlight-source-c++"><pre>T x = y;</pre></div>
+<p>3 . 这种情况需要提一下, 表面上这种情况调用的是<code>T(int)</code>, 但实际上这里涉及到一种编译器的优化方式叫做<strong>Copy elision</strong>, 关于优化我在<a href="https://github.com/nzhl/blog/tree/master/category/cpp/%E8%B0%88%E8%B0%88RVO%2C%20NRVO%2C%20std::move">这里</a>做了一些的介绍, 在不优化的情况下, 下面的式子首先调用T(3)获得临时变量然后才是T x(临时变量)完成初始化, 但是编译器优化之后, 为了减少不必要的拷贝, 这里直接被优化成了T x(3),  所以所表现出来的效果就是只调用了<code>T x(int)</code>.</p>
+<div class="highlight highlight-source-c++"><pre>T x = <span class="pl-c1">3</span>; <span class="pl-c"><span class="pl-c">//</span> image there is a constructor T(int);</span></pre></div>
+<p>下面是对于证明上面的结论的证明</p>
+<div class="highlight highlight-source-c++"><pre>#<span class="pl-k">include</span> <span class="pl-s"><span class="pl-pds">&lt;</span>iostream<span class="pl-pds">&gt;</span></span>
+
+<span class="pl-k">class</span> <span class="pl-en">X</span>{
+<span class="pl-k">public:</span>
+    <span class="pl-en">X</span>(){
+        std::cout &lt;&lt; <span class="pl-s"><span class="pl-pds">"</span>default<span class="pl-pds">"</span></span> &lt;&lt; std::endl;
+    }
+    <span class="pl-en">X</span>(<span class="pl-k">const</span> X&amp; test){
+        std::cout &lt;&lt; <span class="pl-s"><span class="pl-pds">"</span>copy<span class="pl-pds">"</span></span> &lt;&lt; std::endl;
+    }
+
+    <span class="pl-en">X</span>(<span class="pl-k">int</span> x){
+        std::cout &lt;&lt; <span class="pl-s"><span class="pl-pds">"</span>int<span class="pl-pds">"</span></span> &lt;&lt; std::endl;
+    }
+
+};
+
+<span class="pl-k">int</span> <span class="pl-en">main</span>(){
+    X x = <span class="pl-c1">3</span>;
+}
+</pre></div>
+<p>此时输出结果为 <code>int</code>, 然后此时修改代码为如下 :</p>
+<div class="highlight highlight-source-c++"><pre>#<span class="pl-k">include</span> <span class="pl-s"><span class="pl-pds">&lt;</span>iostream<span class="pl-pds">&gt;</span></span>
+
+<span class="pl-k">class</span> <span class="pl-en">X</span>{
+<span class="pl-k">public:</span>
+    <span class="pl-en">X</span>(){
+        std::cout &lt;&lt; <span class="pl-s"><span class="pl-pds">"</span>default<span class="pl-pds">"</span></span> &lt;&lt; std::endl;
+    }
+
+    <span class="pl-en">X</span>(<span class="pl-k">int</span> x){
+        std::cout &lt;&lt; <span class="pl-s"><span class="pl-pds">"</span>int<span class="pl-pds">"</span></span> &lt;&lt; std::endl;
+    }
+<span class="pl-k">private:</span>
+    <span class="pl-en">X</span>(<span class="pl-k">const</span> X&amp; test){
+        std::cout &lt;&lt; <span class="pl-s"><span class="pl-pds">"</span>copy<span class="pl-pds">"</span></span> &lt;&lt; std::endl;
+    }
+
+};
+
+<span class="pl-k">int</span> <span class="pl-en">main</span>(){
+    X x = <span class="pl-c1">3</span>;
+}
+</pre></div>
+<p>结果编译器报错 :</p>
+<div class="highlight highlight-source-shell"><pre>main.cpp:30:7: error: calling a private constructor of class <span class="pl-s"><span class="pl-pds">'</span>X<span class="pl-pds">'</span></span>
+    X x = 3<span class="pl-k">;</span>
+      ^
+main.cpp:19:5: note: declared private here
+    X(const X<span class="pl-k">&amp;</span> test){
+    ^
+1 error generated.
+</pre></div>
+<p>也就是说, 该编译器优化<strong>只有在拷贝构造函数可访问的前提下才能进行</strong>.</p>
+<p>4 . 传递参数</p>
+<div class="highlight highlight-source-c++"><pre>T x;
+<span class="pl-en">xxx</span>(x); <span class="pl-c"><span class="pl-c">//</span> function xxx must have a parameter which is T type (not reference).</span>
+</pre></div>
+<p>5 . 传递返回值</p>
+<div class="highlight highlight-source-c++"><pre>T x = xxx() <span class="pl-c"><span class="pl-c">//</span> function xxx must have a return type T</span></pre></div>
+<p>这种情况也不一定能看到, 而且多数情况下这里会调用移动构造函数而不是拷贝构造函数.<br>
+下面是证明 :</p>
+<div class="highlight highlight-source-c++"><pre>#<span class="pl-k">include</span> <span class="pl-s"><span class="pl-pds">&lt;</span>iostream<span class="pl-pds">&gt;</span></span>
+
+<span class="pl-k">class</span> <span class="pl-en">X</span>{
+<span class="pl-k">public:</span>
+    <span class="pl-en">X</span>(){
+        std::cout &lt;&lt; <span class="pl-s"><span class="pl-pds">"</span>default<span class="pl-pds">"</span></span> &lt;&lt; std::endl;
+    }
+
+
+    <span class="pl-en">X</span>(<span class="pl-k">int</span> x){
+        std::cout &lt;&lt; <span class="pl-s"><span class="pl-pds">"</span>int<span class="pl-pds">"</span></span> &lt;&lt; std::endl;
+    }
+<span class="pl-c"><span class="pl-c">//</span>private:</span>
+    <span class="pl-en">X</span>(<span class="pl-k">const</span> X&amp; test){
+        std::cout &lt;&lt; <span class="pl-s"><span class="pl-pds">"</span>copy<span class="pl-pds">"</span></span> &lt;&lt; std::endl;
+    }
+
+    <span class="pl-en">X</span>(<span class="pl-k">const</span> X&amp;&amp; test){
+        std::cout &lt;&lt; <span class="pl-s"><span class="pl-pds">"</span>move<span class="pl-pds">"</span></span> &lt;&lt; std::endl;
+    }
+};
+
+X <span class="pl-en">xxx</span>(){
+    X n;
+    <span class="pl-k">return</span> n;
+}
+
+<span class="pl-k">int</span> <span class="pl-en">main</span>(){
+    <span class="pl-c1">xxx</span>();
+}
+</pre></div>
+<p>此时函数结果为<code>default</code>. 但如果将<code>private</code>前面的注释去掉, 将会报错 :</p>
+<div class="highlight highlight-source-shell"><pre>main.cpp:25:12: error: calling a private constructor of class <span class="pl-s"><span class="pl-pds">'</span>X<span class="pl-pds">'</span></span>
+    <span class="pl-k">return</span> n<span class="pl-k">;</span>
+           ^
+main.cpp:18:5: note: declared private here
+    X(const X<span class="pl-k">&amp;&amp;</span> test){
+    ^
+1 error generated.</pre></div>
+<p>此时再注释掉移动构造函数, 报错如下 :</p>
+<div class="highlight highlight-source-shell"><pre>main.cpp:27:12: error: calling a private constructor of class <span class="pl-s"><span class="pl-pds">'</span>X<span class="pl-pds">'</span></span>
+    <span class="pl-k">return</span> n<span class="pl-k">;</span>
+           ^
+main.cpp:14:5: note: declared private here
+    X(const X<span class="pl-k">&amp;</span> test){
+    ^
+1 error generated.</pre></div>
+<p>我们可以暂时不管为什么这里优先调用移动构造函数, 但是我们可以明确的是, 如果没有移动构造函数的情况下, 这里虽然优化的结果是只是用了默认构造函数, 但是如果不考虑优化这里确实会调用拷贝构造函数, 其实这里的优化也属于<code>copy elision and return value optimization</code>.<br>
+最后列表初始化数组中的元素或者聚合类的成员时, 也会用到拷贝构造函数, 这里就不提了.</p>
+<h3>移动构造函数</h3>
+<p>这里说实话我自己也不是很清楚, 反正很多要用到临时量, 右值的情况都会调用, 但是考虑编译器优化的话, 很多时候<strong>即使按照规则本来应该调用</strong>, 我们也无法看到. 比如这种情况 :</p>
+<div class="highlight highlight-source-c++"><pre>T x{T{}}</pre></div>
+<p>这里其实对于编译器而言等价于<code>T x{}</code>或者 就是<code>T x;</code> 这里使用了一种叫做构造函数消除的优化, 所以根本看不出来. 另外这里有一点值得一提的是我为什么没有写成 <code>T x(T());</code> 这就是C++的众多坑之一<code>most vexing parse</code>, 如果你这么写了其实编译器会认为这是一个返回类型为T 接受一个返回类型为T参数列表为空的函数指针的函数. 对于编译器来讲, 如果在参数列表中出现函数调用, 将直接转化为该函数的指针, 也就是里的 <code>T()</code> 其实是一个返回T接受0个参数的函数指针, 这其实类似于你在参数列表中写<code>int[]</code>相当于<code>int *</code>. 类似的情况, 同时也更加难以察觉的还有<code>T(T())</code>, 这也是一个函数声明, 但是我至今不知道这声明的是什么. 具体可以看这个 <a href="https://www.zhihu.com/question/49879096?from=profile_question_card" rel="nofollow">帖子</a>, 也是我问的问题.</p>
+<p>我个人觉得比较复杂的地方差不多就这么多了额.</p>
