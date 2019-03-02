@@ -17,7 +17,7 @@ This branch is for distributing only.
 ### 第一次使用
 1. 左上角 Fork 这个仓库, 然后在你自己的仓库列表中找到这个仓库并 `git clone` 到你的电脑上.
 2. 进入项目目录, 默认是`master`分支, 直接`git checkout gh-pages`切换到`gh-pages`分支.
-3. 除非你知道你在干什么, 否则删除CNAME.
+3. 除非你知道你在干什么, 否则删除CNAME. (注意是`git rm CNAME`而不是`rm CNAME`或者是手动删除)
 4. 创建一个文件`config.js`, 具体格式如下:
     ```js
     module.exports = {
