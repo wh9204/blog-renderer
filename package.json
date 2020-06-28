@@ -1,0 +1,12 @@
+{
+  "name": "blog-renderer",
+  "private": "true",
+  "description": "Render issues to blog.",
+  "repository": "https://github.com/nzhl/blog-renderer",
+  "author": "帅的被人砍 <zhangzhimin.hardcore@bytedance.com>",
+  "license": "MIT",
+  "workspaces": ["packages/*"],
+  "scripts": {},
+  "dependencies": {},
+  "devDependencies": { "lerna": "^3.22.1" }
+}

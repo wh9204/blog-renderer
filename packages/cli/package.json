@@ -1,0 +1,23 @@
+{
+  "name": "cli",
+  "version": "1.0.0",
+  "description": "blog cli tools.",
+  "author": "帅的被人砍 <zhangzhimin.hardcore@bytedance.com>",
+  "license": "MIT",
+  "main": "lib/cli.js",
+  "publishConfig": {
+    "registry": "https://registry.npm.taobao.org/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nzhl/blog-renderer.git"
+  },
+  "scripts": {
+    "dev": "ts-node ./src/index.ts"
+  },
+  "devDependencies": {
+    "ts-node": "^8.10.2",
+    "typescript": "^3.9.5"
+  },
+  "dependencies": {}
+}
