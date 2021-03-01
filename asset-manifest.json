@@ -12,5 +12,5 @@
   "static/css/main.599177f3.chunk.css.map": "/static/css/main.599177f3.chunk.css.map",
   "index.html": "/index.html",
   "precache-manifest.b25b7b486d74614c61801c484cb4cd42.js": "/precache-manifest.b25b7b486d74614c61801c484cb4cd42.js",
-  "service-worker.js": "/service-worker.js"
+  "service-worker.js": "/blog-renderer/service-worker.js"
 }
